@@ -6,7 +6,7 @@ function PullAPI() {
     return (
     fetch(url)
         .then((res) => res.json())
-        .then((res) => res.data[1])
+        .then((res) => res.data[0])
     );
 }
 
