@@ -10,32 +10,15 @@ function PullAPI() {
     );
 }
 
-function GetData(props) {
-    console.log(props);
-
-    return (
-        <div className = "Movies">
-            <p>{props.title}</p>
-        </div>
-    )
-}
-
-
 export default function Movies() {
     const [moviesData, setMovies] = useState([]);
 
+    useEffect(() => {
+        setMovies(PullAPI())
+    }, []);
+
     return (
-        <div classname = "MoviesPage">
-            <h1>Movies</h1>
-            <button onClick = {() => {
-                PullAPI().then(moviesData => {
-                    setMovies(moviesData);
-                });
-            }}
-            >
-                Get Movies
-            </button>
-            <GetData {...moviesData}/>
+        <div>
         </div>
     );
 }
