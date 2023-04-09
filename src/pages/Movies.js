@@ -1,24 +1,18 @@
 import React, {useState, useEffect} from 'react';
 
-function PullAPI() {
-    let url = "/moviesSearch.json";
-
-    return (
-    fetch(url)
-        .then((res) => res.json())
-        .then((res) => res.data[0])
-    );
-}
-
 export default function Movies() {
-    const [moviesData, setMovies] = useState([]);
+    const [movies, setMovies] = useState([]);
 
-    useEffect(() => {
-        setMovies(PullAPI())
-    }, []);
+    let url = '/movies.json';
+
+    let data = fetch(url)
+        .then(response => response.json())
+        .then(movie => setMovies(movie));
 
     return (
         <div>
+            <h1>Movies</h1>
+            <h2>{}</h2>
         </div>
-    );
+    )
 }
