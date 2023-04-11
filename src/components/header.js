@@ -22,9 +22,6 @@ function Navigation() {
     )
 }
 
-
-
-
 // header
 export default function Header() {
     return (

@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // components
@@ -11,6 +11,10 @@ import Home from './pages/home';
 import Movies from './pages/Movies';
 import Register from './pages/Register';
 import Login from './pages/Login';
+
+
+
+
 
 export default function App() {
   return (
