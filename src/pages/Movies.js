@@ -53,29 +53,27 @@ function FetchAPIData() {
 export default function Movies() {
     // useState to update the array of movies objects
     const [movies, setMovies] = useState([]);
-    const [reset, resetMovies] = useState(false);
+    const [originalData, setOriginalData] = useState([]);
 
     // load the API data upon page load
     useEffect(() => {
         FetchAPIData()
-            .then(movies => setMovies(movies));
-    }, [reset])
+            .then(movies => {setMovies(movies);
+                            setOriginalData(movies)})
+    }, [])
     
 
     return (
         <div className='movies'>
 
-        <div className = "searchBar">
-              <h3>Movies containing the text <input type = "text" id = "searchBar" onChange={() => {  
-                {/* if the search bar is empty, re-fetch the API data
-                    else, run the filter function */}           
-                if (getSearch().value == "") {
-                    resetMovies(!reset);
-                }
-                else {
-                    setMovies((FilterData(getSearch(), movies)))   
-                }                
-              }}/></h3>              
+        <div className = "search">
+              <h3>
+                Movies containing the text: 
+                <input type = "text" id = "searchBar"/>
+                from year: 
+                <input id = "yearBar"/>
+                <button onClick={() => {setMovies}}>Search!</button>
+              </h3>              
         </div>
 
 
