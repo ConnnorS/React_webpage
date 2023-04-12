@@ -41,7 +41,7 @@ function FilterData(searchParam, data) {
             }
             else {
                 if (element.year == parseInt(searchYear)) {
-                    returnValue.push(element)
+                    returnValue.push(element);
                 }
             }
         } 
@@ -56,7 +56,7 @@ function FetchAPIData() {
 
     return fetch(url)
         .then(response => response.json())
-        .then(response => response.data)
+        .then(response => response.data);
 }
 
 
@@ -69,7 +69,7 @@ export default function Movies() {
     useEffect(() => {
         FetchAPIData()
             .then(movies => {setMovies(movies);
-                            setOriginalData(movies)})
+                            setOriginalData(movies)});
     }, [])
     
 
