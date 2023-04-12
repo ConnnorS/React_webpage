@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
+
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
+
+import { useNavigate } from 'react-router-dom';
 
 // column definitions for table
 const columns = [
@@ -65,6 +68,9 @@ export default function Movies() {
     const [movies, setMovies] = useState([]);
     const [originalData, setOriginalData] = useState([]);
 
+    // set up the navigate function to move across pages
+    const navigate = useNavigate();
+
     // load the API data upon page load
     useEffect(() => {
         FetchAPIData()
@@ -98,6 +104,7 @@ export default function Movies() {
             <AgGridReact
                 columnDefs = {columns}
                 rowData = {movies}
+                onRowClicked={(row) => navigate(`/moreInfo?imdbID=${row.data.imdbID}`)}
             />
         </div>
         </div>
