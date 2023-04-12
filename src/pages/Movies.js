@@ -21,20 +21,30 @@ const columns = [
 
 // function to get information from the search bar
 function getSearch() {
-    return document.getElementById("searchBar");
+    return [document.getElementById("searchBar"), document.getElementById("yearBar")];
 }
 
 
 // function to filter the API data based on a search term
 function FilterData(searchParam, data) {
-    searchParam = searchParam.value;
+    const searchTerm = searchParam[0].value
+    const searchYear = searchParam[1].value;
     let returnValue = [];
 
     // loop through the data array to find matches
     data.forEach(element => {
-        if (element.title.toLowerCase().includes(searchParam)) {
-            returnValue.push(element);
-        }       
+        // if the element contains the search term
+        if (element.title.toLowerCase().includes(searchTerm)) {
+            // check whether the year is blank and act accordingly
+            if (searchYear == '') {
+                returnValue.push(element);
+            }
+            else {
+                if (element.year == parseInt(searchYear)) {
+                    returnValue.push(element)
+                }
+            }
+        } 
     });
 
     return returnValue;
@@ -71,8 +81,14 @@ export default function Movies() {
                 Movies containing the text: 
                 <input type = "text" id = "searchBar"/>
                 from year: 
-                <input id = "yearBar"/>
-                <button onClick={() => {setMovies}}>Search!</button>
+                <input type = "number" id = "yearBar"/>
+                <button onClick={() => {
+                    setMovies(originalData);
+                    setMovies(FilterData(getSearch(), movies));
+                    }}>Search!</button>
+                <button onClick={() => {
+                    setMovies(originalData);
+                }}>Reset</button>
               </h3>              
         </div>
 
