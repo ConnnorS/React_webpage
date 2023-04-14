@@ -1,3 +1,4 @@
+// import statements
 import React, {useState, useEffect} from 'react';
 
 import { AgGridReact } from 'ag-grid-react';
@@ -23,64 +24,47 @@ const columns = [
 ]
 
 // function to get information from the search bar
-function getSearch() {
+function getSearchParams() {
     return [document.getElementById("searchBar"), document.getElementById("yearBar")];
 }
 
-
-// function to filter the API data based on a search term
-function FilterData(searchParam, data) {
-    const searchTerm = searchParam[0].value
-    const searchYear = searchParam[1].value;
-    let returnValue = [];
-
-    // loop through the data array to find matches
-    data.forEach(element => {
-        // if the element contains the search term
-        if (element.title.toLowerCase().includes(searchTerm)) {
-            // check whether the year is blank and act accordingly
-            if (searchYear == '') {
-                returnValue.push(element);
-            }
-            else {
-                if (element.year == parseInt(searchYear)) {
-                    returnValue.push(element);
-                }
-            }
-        } 
-    });
-
-    return returnValue;
-}
-
 // function to fetch the data from the API
-function FetchAPIData(pageNum) {
-    
-    let url = `http://sefdb02.qut.edu.au:3000/movies/search?page=${pageNum}`;
+function FetchAPIData(page) {
+    // get the search parameters
+    const searchParams = getSearchParams();
+    let title = searchParams[0].value;
+    let year = searchParams[1].value;
 
+    // check if any of the variables are undefined to avoid a bad query
+    title === undefined ? title = '' : title = title;
+    year === undefined ? year = '' : year = year;
+    page === undefined ? page = '' : page = page;
+    
+    // fetch the data and return it
+    let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${title}&year=${year}&page=${page}`;
     return fetch(url)
-        .then(response => response.json())
-        .then(response => response.data);
+        .then(response => response.ok ? response.json() : Promise.reject("Network response was not ok"))
+        .then(response => response.data)
+        .catch(error => {console.error("Error: ", error);});
 }
 
 
 export default function Movies() {
-    // useState to update the array of movies objects
+    // useState to update the array of movies
     const [movies, setMovies] = useState([]);
-    const [originalData, setOriginalData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
     // set up the navigate function to move across pages
     const navigate = useNavigate();
 
-    // load the API data upon page load
-    useEffect(() => {
+    // function to fetch and set API data (for cleaner code)
+    function setAPIData() {
         FetchAPIData(currentPage)
-            .then(movies => {setMovies(movies);
-                            setOriginalData(movies)
-                            }
-                );
-    }, [currentPage])
+            .then(movies => setMovies(movies));
+    }
+
+    // load the API data upon page load
+    useEffect(() => setAPIData(), [currentPage])
     
 
     return (
@@ -92,13 +76,8 @@ export default function Movies() {
                 <input type = "text" id = "searchBar"/>
                 from year: 
                 <input type = "number" id = "yearBar"/>
-                <button onClick={() => {
-                    setMovies(originalData);
-                    setMovies(FilterData(getSearch(), movies));
-                    }}>Search!</button>
-                <button onClick={() => {
-                    setMovies(originalData);
-                }}>Reset</button>
+
+                <button onClick = {() => setAPIData()}>Search!</button>
               </h3>              
         </div>
 
@@ -115,6 +94,7 @@ export default function Movies() {
         {/* buttons to move back and fourth through the pages */}
         <div className = "tableNav">
             <button onClick = {() => {
+                // change the current page to trigger the useEffect and change pages
                 if (currentPage >= 2) {
                     setCurrentPage(currentPage - 1)
                 }

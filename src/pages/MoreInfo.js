@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
-import Home from "./home";
+import { useSearchParams, Link } from "react-router-dom"
+
 
 export default function MoreInfo() {
     // useState variable for more in-depth movie information
@@ -21,14 +21,18 @@ export default function MoreInfo() {
 
     return (
     <div>
+        <Link to = "/">Back</Link>
+
         <h1>{mainInfo.title}</h1>
 
         <p>
             Released in: {mainInfo.year}<br/>
             Run time: {mainInfo.runtime} minutes<br/>
-            Genres: {mainInfo.genres}<br/>
+            Genres: {mainInfo.genres?.map((genre) => (
+                <li key = {genre}>{genre}</li>
+            ))}<br/>
             Country: {mainInfo.country}<br/>
-            Box Office: ${mainInfo.boxoffice}<br/>
+            Box Office: ${mainInfo.boxoffice?.toLocaleString()}<br/>
             <br/>
             <i>{mainInfo.plot}</i><br/>
             <br/>
