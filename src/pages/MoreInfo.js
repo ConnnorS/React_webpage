@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react"
 import { useSearchParams, Link } from "react-router-dom"
+import { AgGridReact } from 'ag-grid-react';
+
+
+// columns for actor information
+const columns = [
+    {headerName: "Role",
+    field: "category"},
+    {headerName: "Name",
+    field: "name"},
+    {headerName: "Character/s",
+    field: "characters"}
+]
 
 
 export default function MoreInfo() {
     // useState variable for more in-depth movie information
     const [mainInfo, setMainInfo] = useState([]);
-    const [formattedInfo, setFormattedInfo] = useState([]);
 
     // get the search parameters (imdbID)
     const [searchParams] = useSearchParams();
@@ -38,6 +49,15 @@ export default function MoreInfo() {
             <br/>
             <img src = {mainInfo.poster}/>
         </p>
+
+        {/* the table of movies */}
+        <div className = "ag-theme-balham"
+        style={{height: "300px", width: "605px"}}>            
+            <AgGridReact
+                columnDefs = {columns}
+                rowData = {mainInfo.principals}
+            />
+        </div>
     </div>
     )
 }

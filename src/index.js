@@ -21,7 +21,6 @@ root.render(
     <div className="App">
 
       <Header/>
-
       <Routes>
         <Route path = "/" element = {<Home/>}/>
         <Route path = "/movies" element = {<Movies/>}/>
@@ -29,7 +28,6 @@ root.render(
         <Route path = "/login" element = {<Login/>}/>
         <Route path = "/moreInfo" element = {<MoreInfo/>}/>
       </Routes>
-
       <Footer/>
 
     </div>

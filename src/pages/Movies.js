@@ -71,19 +71,19 @@ export default function Movies() {
         <div className='movies'>
         {/* search boxes to filter movies */}
         <div className = "search">
-              <h3>
-                Movies containing the text: 
+              <h4>
+                Movies containing the text: &nbsp;
                 <input type = "text" id = "searchBar"/>
-                from year: 
+                &nbsp; from year: &nbsp;
                 <input type = "number" id = "yearBar"/>
-
-                <button onClick = {() => setAPIData()}>Search!</button>
-              </h3>              
+                &nbsp;
+                <button id = "searchButton" onClick = {() => setAPIData()}>Search!</button>
+              </h4>             
         </div>
 
         {/* the table of movies */}
         <div className = "ag-theme-balham"
-        style={{height: "300px", width: "800px"}}>            
+        style={{height: "800px", width: "800px"}}>            
             <AgGridReact
                 columnDefs = {columns}
                 rowData = {movies}
