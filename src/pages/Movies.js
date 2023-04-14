@@ -54,8 +54,9 @@ function FilterData(searchParam, data) {
 }
 
 // function to fetch the data from the API
-function FetchAPIData() {
-    let url = 'http://sefdb02.qut.edu.au:3000/movies/search';
+function FetchAPIData(pageNum) {
+    
+    let url = `http://sefdb02.qut.edu.au:3000/movies/search?page=${pageNum}`;
 
     return fetch(url)
         .then(response => response.json())
@@ -67,21 +68,24 @@ export default function Movies() {
     // useState to update the array of movies objects
     const [movies, setMovies] = useState([]);
     const [originalData, setOriginalData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     // set up the navigate function to move across pages
     const navigate = useNavigate();
 
     // load the API data upon page load
     useEffect(() => {
-        FetchAPIData()
+        FetchAPIData(currentPage)
             .then(movies => {setMovies(movies);
-                            setOriginalData(movies)});
-    }, [])
+                            setOriginalData(movies)
+                            }
+                );
+    }, [currentPage])
     
 
     return (
         <div className='movies'>
-
+        {/* search boxes to filter movies */}
         <div className = "search">
               <h3>
                 Movies containing the text: 
@@ -98,7 +102,7 @@ export default function Movies() {
               </h3>              
         </div>
 
-
+        {/* the table of movies */}
         <div className = "ag-theme-balham"
         style={{height: "300px", width: "800px"}}>            
             <AgGridReact
@@ -106,6 +110,17 @@ export default function Movies() {
                 rowData = {movies}
                 onRowClicked={(row) => navigate(`/moreInfo?imdbID=${row.data.imdbID}`)}
             />
+        </div>
+
+        {/* buttons to move back and fourth through the pages */}
+        <div className = "tableNav">
+            <button onClick = {() => {
+                if (currentPage >= 2) {
+                    setCurrentPage(currentPage - 1)
+                }
+                }}>Previous Page</button>
+            {currentPage}
+            <button onClick = {() => {setCurrentPage(currentPage + 1)}}>Next Page</button>
         </div>
         </div>
     )

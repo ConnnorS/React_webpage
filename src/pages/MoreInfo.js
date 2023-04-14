@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
+import Home from "./home";
 
 export default function MoreInfo() {
     // useState variable for more in-depth movie information
