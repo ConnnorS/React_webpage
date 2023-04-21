@@ -25,7 +25,7 @@ export default function MoreInfo() {
     // fetch the API info
     const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
     useEffect(() => {
-        fetch(url)
+        fetch(url, {method: "GET"})
             .then(response => response.json())
             .then(mainInfo => setMainInfo(mainInfo));
     }, []);

@@ -9,8 +9,7 @@ import { useNavigate } from 'react-router-dom';
 // column definitions for table
 const columns = [
     {headerName: "Title",
-    field: "title",
-    sortable: true},
+    field: "title",},
     {headerName: "Year",
     field: "year"},
     {headerName: "IMDB Rating",
@@ -23,7 +22,7 @@ const columns = [
     field: "classification"},
 ]
 
-// function to get information from the search bar
+// function to get information from the search bars
 function getSearchParams() {
     return [document.getElementById("searchBar"), document.getElementById("yearBar")];
 }
@@ -42,7 +41,7 @@ function FetchAPIData(page) {
     
     // fetch the data and return it
     let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${title}&year=${year}&page=${page}`;
-    return fetch(url)
+    return fetch(url, {method: "GET"})
         .then(response => response.ok ? response.json() : Promise.reject("Network response was not ok"))
         .then(response => response.data)
         .catch(error => {console.error("Error: ", error);});
@@ -64,11 +63,13 @@ export default function Movies() {
     }
 
     // load the API data upon page load
+    // re-load when the page changes
     useEffect(() => setAPIData(), [currentPage])
     
 
     return (
         <div className='movies'>
+
         {/* search boxes to filter movies */}
         <div className = "search">
               <h4>
@@ -82,9 +83,10 @@ export default function Movies() {
         </div>
 
         {/* the table of movies */}
-        <div className = "ag-theme-balham"
+        <div
         style={{height: "800px", width: "800px"}}>            
-            <AgGridReact
+            <AgGridReact 
+            className= "mainTable"
                 columnDefs = {columns}
                 rowData = {movies}
                 onRowClicked={(row) => navigate(`/moreInfo?imdbID=${row.data.imdbID}`)}
@@ -95,6 +97,7 @@ export default function Movies() {
         <div className = "tableNav">
             <button onClick = {() => {
                 // change the current page to trigger the useEffect and change pages
+                // only allow the page to go back if it's more than 2
                 if (currentPage >= 2) {
                     setCurrentPage(currentPage - 1)
                 }
@@ -102,6 +105,7 @@ export default function Movies() {
             {currentPage}
             <button onClick = {() => {setCurrentPage(currentPage + 1)}}>Next Page</button>
         </div>
+
         </div>
     )
 }
