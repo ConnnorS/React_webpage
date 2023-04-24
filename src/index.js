@@ -13,6 +13,7 @@ import Movies from './pages/Movies';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import MoreInfo from './pages/MoreInfo';
+import Actor from './pages/Actor';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -27,6 +28,7 @@ root.render(
         <Route path = "/register" element = {<Register/>}/>
         <Route path = "/login" element = {<Login/>}/>
         <Route path = "/moreInfo" element = {<MoreInfo/>}/>
+        <Route path = "/actor" element = {<Actor/>}/>
       </Routes>
       <Footer/>
 

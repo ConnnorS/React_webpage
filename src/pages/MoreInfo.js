@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { useSearchParams, Link } from "react-router-dom"
+import { useSearchParams, Link, useNavigate } from "react-router-dom"
 import { AgGridReact } from 'ag-grid-react';
-
 
 // columns for actor information
 const columns = [
@@ -21,6 +20,9 @@ export default function MoreInfo() {
     // get the search parameters (imdbID)
     const [searchParams] = useSearchParams();
     const imdbID = searchParams.get("imdbID");
+
+    // set up the navigate function to move across pages
+    const navigate = useNavigate();
 
     // fetch the API info
     const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
@@ -47,15 +49,16 @@ export default function MoreInfo() {
             <br/>
             <i>{mainInfo.plot}</i><br/>
             <br/>
-            <img src = {mainInfo.poster}/>
+            <img src = {mainInfo.poster} alt = "Movie Poster"/>
         </p>
 
-        {/* the table of movies */}
+        {/* the table of actors */}
         <div className = "ag-theme-balham"
         style={{height: "300px", width: "605px"}}>            
             <AgGridReact
                 columnDefs = {columns}
                 rowData = {mainInfo.principals}
+                onRowClicked={row => navigate(`/actor?id=${row.data.id}`)}
             />
         </div>
     </div>
