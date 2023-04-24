@@ -64,9 +64,8 @@ export default function Register() {
                 <label htmlFor = "userPassword2">Confirm Password: </label>
                 <input id = "userPassword2" name = "userPassword2" type = "text"/>
                 <br/>
+                <button onClick = {() => VerifyInput() ? CreateUser() : setRegStatus("Bad Input")}>Confirm!</button>
             </strong></form>
-
-            <button onClick = {() => VerifyInput() ? CreateUser() : setRegStatus("Bad Input")}>Confirm!</button>
             <p><br/><b>Status:</b> {regStatus}</p>
         <br/>    
         </div>
