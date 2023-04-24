@@ -18,12 +18,38 @@ function VerifyInput() {
     return (emailPattern.test(userInput.email) && userInput.password === userInput.passwordConfirm);
 }
 
+// function to create the user
 function CreateUser() {
-    // code to send POST request
+    // define the url and get the user's input
+    const url = 'http://sefdb02.qut.edu.au:3000/user/register';
+    const data = GetEmailAndPassword();
+
+    // create the user
+    fetch(url, {
+        method: "POST", 
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email: data.email, password: data.password})})
+        .then(response => {
+            switch (response.status) {
+                case 201:
+                    console.log("User Created!");
+                    return response.json();
+
+                case 400:
+                    throw new Error("Bad Request");
+
+                case 409:
+                    throw new Error("User Already Exists");
+
+                case 429:
+                    throw new Error("Too Many Requests");
+            }          
+        })
 }
 
-
 export default function Register() {
+    const [regStatus, setRegStatus] = useState("Registration Incomplete");
+
     return (
         <div>
             <h1>Register</h1>
@@ -40,8 +66,8 @@ export default function Register() {
                 <br/>
             </strong></form>
 
-            <button onClick = {() => VerifyInput() ? (console.log("Good")) : console.log("Bad")}>Confirm!</button>
-            
+            <button onClick = {() => VerifyInput() ? CreateUser() : setRegStatus("Bad Input")}>Confirm!</button>
+            <p><br/><b>Status:</b> {regStatus}</p>
         <br/>    
         </div>
     )
