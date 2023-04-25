@@ -8,16 +8,6 @@ function GetEmailAndPassword() {
             passwordConfirm: document.getElementById("userPassword2").value};
 }
 
-// function to verify the user's input
-function VerifyInput() {
-    // get the user's input
-    const userInput = GetEmailAndPassword();
-    
-    // verify the user's input
-    const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    return (emailPattern.test(userInput.email) && userInput.password === userInput.passwordConfirm);
-}
-
 // function to create the user
 function CreateUser() {
     // define the url and get the user's input

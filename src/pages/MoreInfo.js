@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { useSearchParams, Link, useNavigate } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import { AgGridReact } from 'ag-grid-react';
+
+import { GetMovieInfo } from "../backend/moreInfoBackend";
 
 // columns for actor information
 const columns = [
@@ -12,38 +14,11 @@ const columns = [
     field: "characters"}
 ]
 
-// function to fetch the movie's information
-function GetMovieInfo(imdbID) {
-    const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
-
-    return fetch(url, {method: "GET"})
-            .then(response => {
-                switch(response.status) {
-                    case 200:
-                        return response.json();
-
-                    case 400:
-                        throw new Error("Invalid Query Parameter");
-
-                    case 404:
-                        throw new Error("Movie ID Not Found");
-
-                    case 429:
-                        throw new Error("Too Many Requests");
-                }
-            });
-}
-
-
 export default function MoreInfo() {
-    // useState variable for more in-depth movie information
+    // page setup
     const [movieInfo, setMovieInfo] = useState([]);
-
-    // get the search parameters (imdbID)
     const [searchParams] = useSearchParams();
     const imdbID = searchParams.get("imdbID");
-
-    // set up the navigate function to move across pages
     const navigate = useNavigate();
 
     // fetch the API info upon page load
