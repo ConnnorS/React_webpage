@@ -45,8 +45,9 @@ export default function Login() {
                 <label htmlFor = "userPassword">Password: </label>
                 <input id = "userPassword" name = "userPassword" type = "text"/>
                 <br/>
+                <button onClick = {() => SignIn()}>Confirm!</button>
             </strong></form>
-            <button onClick = {() => SignIn()}>Confirm!</button>
+
         </div>
     )
 }
