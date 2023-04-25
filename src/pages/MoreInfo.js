@@ -12,10 +12,32 @@ const columns = [
     field: "characters"}
 ]
 
+// function to fetch the movie's information
+function GetMovieInfo(imdbID) {
+    const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
+
+    return fetch(url, {method: "GET"})
+            .then(response => {
+                switch(response.status) {
+                    case 200:
+                        return response.json();
+
+                    case 400:
+                        throw new Error("Invalid Query Parameter");
+
+                    case 404:
+                        throw new Error("Movie ID Not Found");
+
+                    case 429:
+                        throw new Error("Too Many Requests");
+                }
+            });
+}
+
 
 export default function MoreInfo() {
     // useState variable for more in-depth movie information
-    const [mainInfo, setMainInfo] = useState([]);
+    const [movieInfo, setMovieInfo] = useState([]);
 
     // get the search parameters (imdbID)
     const [searchParams] = useSearchParams();
@@ -24,32 +46,25 @@ export default function MoreInfo() {
     // set up the navigate function to move across pages
     const navigate = useNavigate();
 
-    // fetch the API info
-    const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
-    useEffect(() => {
-        fetch(url, {method: "GET"})
-            .then(response => response.json())
-            .then(mainInfo => setMainInfo(mainInfo));
-    }, []);
+    // fetch the API info upon page load
+    useEffect(() => {GetMovieInfo(imdbID).then(info => setMovieInfo(info))}, []);
 
     return (
     <div>
-        <Link to = "/">Back</Link>
-
-        <h1>{mainInfo.title}</h1>
+        <h1>{movieInfo.title}</h1>
 
         <p>
-            Released in: {mainInfo.year}<br/>
-            Run time: {mainInfo.runtime} minutes<br/>
-            Genres: {mainInfo.genres?.map((genre) => (
+            Released in: {movieInfo.year}<br/>
+            Run time: {movieInfo.runtime} minutes<br/>
+            Genres: {movieInfo.genres?.map((genre) => (
                 <li key = {genre}>{genre}</li>
             ))}<br/>
-            Country: {mainInfo.country}<br/>
-            Box Office: ${mainInfo.boxoffice?.toLocaleString()}<br/>
+            Country: {movieInfo.country}<br/>
+            Box Office: ${movieInfo.boxoffice?.toLocaleString()}<br/>
             <br/>
-            <i>{mainInfo.plot}</i><br/>
+            <i>{movieInfo.plot}</i><br/>
             <br/>
-            <img src = {mainInfo.poster} alt = "Movie Poster"/>
+            <img src = {movieInfo.poster} alt = "Movie Poster"/>
         </p>
 
         {/* the table of actors */}
@@ -57,7 +72,7 @@ export default function MoreInfo() {
         style={{height: "300px", width: "605px"}}>            
             <AgGridReact
                 columnDefs = {columns}
-                rowData = {mainInfo.principals}
+                rowData = {movieInfo.principals}
                 onRowClicked={row => navigate(`/actor?id=${row.data.id}`)}
             />
         </div>

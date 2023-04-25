@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 
 // function to get information from the email and password bars
 function GetEmailAndPassword() {
@@ -25,30 +25,30 @@ function CreateUser() {
     const data = GetEmailAndPassword();
 
     // create the user
-    fetch(url, {
+    return fetch(url, {
         method: "POST", 
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({email: data.email, password: data.password})})
         .then(response => {
-            switch (response.status) {
+            console.log(response);
+            switch(response.status) {
                 case 201:
-                    console.log("User Created!");
-                    return response.json();
+                    return ("User Created!")
 
                 case 400:
-                    throw new Error("Bad Request");
+                    return ("Both Email and Password Required");
 
                 case 409:
-                    throw new Error("User Already Exists");
+                    return ("User Already Exists");
 
                 case 429:
-                    throw new Error("Too Many Requests");
-            }          
-        })
+                    return ("Too Many Requests");
+            }
+        });
 }
 
 export default function Register() {
-    const [regStatus, setRegStatus] = useState("Registration Incomplete");
+    const [registerStatus, setRegisterStatus] = useState("");
 
     return (
         <div>
@@ -64,9 +64,10 @@ export default function Register() {
                 <label htmlFor = "userPassword2">Confirm Password: </label>
                 <input id = "userPassword2" name = "userPassword2" type = "text"/>
                 <br/>
-                <button onClick = {() => VerifyInput() ? CreateUser() : setRegStatus("Bad Input")}>Confirm!</button>
             </strong></form>
-            <p><br/><b>Status:</b> {regStatus}</p>
+            <button onClick = {() => CreateUser().then(response => setRegisterStatus(response))}>
+            Confirm!</button>   
+            <p>{registerStatus}</p>        
         <br/>    
         </div>
     )

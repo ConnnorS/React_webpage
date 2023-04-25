@@ -24,36 +24,45 @@ const columns = [
 
 // function to get information from the search bars
 function getSearchParams() {
-    return [document.getElementById("searchBar"), document.getElementById("yearBar")];
+    return {searchTitle: document.getElementById("searchBar").value, 
+            searchYear: document.getElementById("yearBar").value};
 }
 
 // function to fetch the data from the API
 function FetchAPIData(page) {
     // get the search parameters
     const searchParams = getSearchParams();
-    let title = searchParams[0].value;
-    let year = searchParams[1].value;
 
     // check if any of the variables are undefined to avoid a bad query
-    title === undefined ? title = '' : title = title;
-    year === undefined ? year = '' : year = year;
-    page === undefined ? page = '' : page = page;
+    if (searchParams.searchTitle === undefined) searchParams.searchTitle = '';
+    if (searchParams.searchYear === undefined) searchParams.searchYear = '';
+    if (page === undefined) page = '';
     
     // fetch the data and return it
-    let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${title}&year=${year}&page=${page}`;
+    let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${searchParams.searchTitle}&year=${searchParams.searchYear}&page=${page}`;
     return fetch(url, {method: "GET"})
-        .then(response => response.ok ? response.json() : Promise.reject("Network response was not ok"))
+        .then(response => {
+            switch(response.status) {
+                case 200:
+                    return response.json();
+                
+                case 400:
+                    throw new Error("Invalid Query");
+
+                case 429:
+                    throw new Error("Too Many Requests");
+            }
+        })
         .then(response => response.data)
-        .catch(error => {console.error("Error: ", error);});
 }
 
 
 export default function Movies() {
     // useState to update the array of movies
+    // and to keep track of the page number
     const [movies, setMovies] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
-    // set up the navigate function to move across pages
     const navigate = useNavigate();
 
     // function to fetch and set API data (for cleaner code)
@@ -97,7 +106,7 @@ export default function Movies() {
         <div className = "tableNav">
             <button onClick = {() => {
                 // change the current page to trigger the useEffect and change pages
-                // only allow the page to go back if it's more than 2
+                // only allow the page to go back if it's >= 2
                 if (currentPage >= 2) {
                     setCurrentPage(currentPage - 1)
                 }

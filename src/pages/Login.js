@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // function to get information from the email and password bars
 function GetEmailAndPassword() {
     // return the user's input as an object
@@ -10,30 +12,21 @@ function SignIn() {
     const url = "http://sefdb02.qut.edu.au:3000/user/login";
     const data = GetEmailAndPassword();
 
-    fetch(url, {
+    // log in the user and get the bearer token if successful
+    return fetch(url, {
         method: "POST", 
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({email: data.email, password: data.password})})
-        .then(response => { 
-            switch(response.status) {
-                case 200:
-                    console.log("Successful login");
-                    return response.json();
-
-                case 400:
-                    throw new Error("Invalid log in request");
-
-                case 401:
-                    throw new Error("Incorrect email or password");
-
-                case 429:
-                    throw new Error("Too many requests");
-        }
-        })
-        .then(response => localStorage.setItem("token", response.bearerToken.token));
+        .then(result => {
+            if (result.ok) {return result.json()} 
+            else {throw new Error(result.statusText)}})
+        .then(result => {localStorage.setItem("token", result.bearerToken.token); return "Login Successful"})
+        .catch(() => {return "Error in Login"});
 }
 
 export default function Login() {
+    const [loginStatus, setLoginStatus] = useState("Status");
+
     return (
         <div>
             <h1>Login</h1>
@@ -45,9 +38,9 @@ export default function Login() {
                 <label htmlFor = "userPassword">Password: </label>
                 <input id = "userPassword" name = "userPassword" type = "text"/>
                 <br/>
-                <button onClick = {() => SignIn()}>Confirm!</button>
             </strong></form>
-
+            <button onClick = {() => SignIn().then(response => setLoginStatus(response))}>Confirm!</button>
+            <p>{loginStatus}</p>
         </div>
     )
 }
