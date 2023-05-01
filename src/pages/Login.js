@@ -12,54 +12,57 @@ function RefreshBearer() {
     const refreshToken = localStorage.getItem("refreshToken");
     const url = "http://sefdb02.qut.edu.au:3000/user/refresh";
 
+    console.log(`Sending ${refreshToken}`);
+
     return fetch(url, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({refreshToken: refreshToken})})
+        body: JSON.stringify({refreshToken: refreshToken})
+    })
+    // check if the response is ok
     .then(result => {
-        const bearerExpiry = new Date().getTime() + result.bearerToken.expires_in * 1000;
+        if (result.ok) {return result.json()} 
+        else {throw new Error(result.statusText)}
+    })
+    .then(result => {
+        console.log("Result OK");
+        console.log(result);
+
         localStorage.setItem("token", result.bearerToken.token);
         localStorage.setItem("refreshToken", result.refreshToken.token);
-        localStorage.setItem("bearerExpiration", bearerExpiry);
 
         return "Token Refreshed";
     })
     .catch(() => {return "Error in token Refresh"});
-
-}
-
-// function to check if the token is expired
-function isBearerExpired() {
-    const expirationTime = localStorage.getItem("bearerExpiration");
-    if (expirationTime && new Date().getTime() > expirationTime) RefreshBearer();
 }
 
 // function to login the user
-function SignIn() {
+function SignInUser() {
     const url = "http://sefdb02.qut.edu.au:3000/user/login";
     const data = GetEmailAndPassword();
+
+    console.log("Attempting Login");
+    console.log(`Sending email: ${data.email} and password: ${data.password}`);
 
     // log in the user and get the bearer token if successful
     return fetch(url, {
         method: "POST", 
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email: data.email, password: data.password})})
-        // check if the response is ok
+        body: JSON.stringify({email: data.email, password: data.password})
+    })
+    // check if the response is ok
     .then(result => {
         if (result.ok) {return result.json()} 
         else {throw new Error(result.statusText)}
     })
     // get the bearer token and its expiry
     .then(result => {
-        console.log(result.bearerToken);
-        console.log(result.refreshToken);
-        const bearerExpiry = new Date().getTime() + result.bearerToken.expires_in * 1000;
+        console.log("Result OK");
+        console.log(result);
         localStorage.setItem("token", result.bearerToken.token);
         localStorage.setItem("refreshToken", result.refreshToken.token);
-        localStorage.setItem("bearerExpiration", bearerExpiry);
-        localStorage.setItem("loggedIn", true);
         // call the refresh token function every 10 minutes
-        setInterval(isBearerExpired(), 600000)
+        setTimeout(RefreshBearer, result.bearerToken.expires_in * 1000);
 
         return "Login Successful";
     })
@@ -82,7 +85,7 @@ export default function Login() {
                 <input id = "userPassword" name = "userPassword" type = "text"/>
                 <br/>
             </strong></form>
-            <button onClick = {() => SignIn().then(response => setLoginStatus(response))}>Confirm!</button>
+            <button onClick = {() => SignInUser().then(response => setLoginStatus(response))}>Confirm!</button>
             <p>{loginStatus}</p>
         </div>
     )
