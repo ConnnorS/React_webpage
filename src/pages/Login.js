@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // function to get information from the email and password bars
 function GetEmailAndPassword() {
@@ -72,6 +72,7 @@ function SignInUser() {
 }
 
 export default function Login() {
+    const Navigate = useNavigate();
     return (
         <div>
             <h1>Login</h1>
@@ -83,7 +84,7 @@ export default function Login() {
                 <label htmlFor = "userPassword">Password: </label>
                 <input id = "userPassword" name = "userPassword" type = "text"/>
                 <br/>
-                <button type = "submit" onClick = {() => {SignInUser(); window.location.reload()}}>Confirm!</button>
+                <button type = "submit" onClick = {() => {SignInUser(); window.location.reload(); }}>Confirm!</button>
             </strong></form>
         </div>
     )
