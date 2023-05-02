@@ -61,6 +61,7 @@ function SignInUser() {
         console.log(result);
         localStorage.setItem("token", result.bearerToken.token);
         localStorage.setItem("refreshToken", result.refreshToken.token);
+        localStorage.setItem("loggedIn", true);
         // call the refresh token function every 10 minutes
         setTimeout(RefreshBearer, result.bearerToken.expires_in * 1000);
 
@@ -71,8 +72,6 @@ function SignInUser() {
 }
 
 export default function Login() {
-    const [loginStatus, setLoginStatus] = useState("Status");
-
     return (
         <div>
             <h1>Login</h1>
@@ -84,9 +83,8 @@ export default function Login() {
                 <label htmlFor = "userPassword">Password: </label>
                 <input id = "userPassword" name = "userPassword" type = "text"/>
                 <br/>
+                <button type = "submit" onClick = {() => {SignInUser(); window.location.reload()}}>Confirm!</button>
             </strong></form>
-            <button onClick = {() => SignInUser().then(response => setLoginStatus(response))}>Confirm!</button>
-            <p>{loginStatus}</p>
         </div>
     )
 }
