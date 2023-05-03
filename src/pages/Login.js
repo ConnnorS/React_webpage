@@ -61,7 +61,7 @@ function SignInUser() {
         localStorage.setItem("refreshToken", result.refreshToken.token);
         localStorage.setItem("loggedIn", true);
         // call the refresh token function every 10 minutes
-        setTimeout(RefreshBearer, result.bearerToken.expires_in * 1000);
+        setTimeout(RefreshBearer, result.bearerToken.expires_in * 100);
     })
     // return an error if something went wrong
     .catch(() => console.log("Login Unsuccessful"));
