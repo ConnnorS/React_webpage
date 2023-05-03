@@ -83,8 +83,9 @@ function SignInUser() {
 
 export default function Login() {
   const Navigate = useNavigate();
+  
   return (
-    <div>
+    <div className="login">
       <h1>Login</h1>
       <br />
       <form>

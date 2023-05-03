@@ -41,7 +41,7 @@ export default function Actor() {
   }, []);
 
   return (
-    <div>
+    <div className = "actor">
       <h1>{notLoggedInMessage}</h1>
       <h2>Actor</h2>
       <p>

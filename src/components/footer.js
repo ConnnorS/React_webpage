@@ -1,7 +1,7 @@
 // footer
 export default function Footer() {
   return (
-    <div>
+    <div className="footer">
       <p>
         All data is from IMDB, Metacritic, and RottenTomatoes.
         <br />

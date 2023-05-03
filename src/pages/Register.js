@@ -40,7 +40,7 @@ export default function Register() {
   const [registerStatus, setRegisterStatus] = useState("");
 
   return (
-    <div>
+    <div className="register">
       <h1>Register</h1>
       <br />
       <form>
@@ -56,7 +56,7 @@ export default function Register() {
           <br />
         </strong>
       </form>
-      <button
+      <button id="confirm"
         onClick={() =>
           CreateUser().then((response) => setRegisterStatus(response))
         }

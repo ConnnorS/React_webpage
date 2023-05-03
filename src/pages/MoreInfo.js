@@ -42,7 +42,7 @@ export default function MoreInfo() {
   }, []);
 
   return (
-    <div>
+    <div className="moreInfo">
       <h1>{movieInfo.title}</h1>
 
       <p>
