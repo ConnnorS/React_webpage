@@ -19,7 +19,7 @@ function LoggedOn() {
     return (
     <>
         <li>
-            <Link to = "/">Logged In</Link>
+            <Link to = "/Logout">Log Out</Link>
         </li>
     </>
     )

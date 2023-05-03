@@ -14,6 +14,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import MoreInfo from './pages/MoreInfo';
 import Actor from './pages/Actor';
+import Logout from './pages/Logout';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,6 +30,7 @@ root.render(
         <Route path = "/login" element = {<Login/>}/>
         <Route path = "/moreInfo" element = {<MoreInfo/>}/>
         <Route path = "/actor" element = {<Actor/>}/>
+        <Route path = "/logout" element = {<Logout/>}/>
       </Routes>
       <Footer/>
 
