@@ -2,7 +2,27 @@ import React, { useEffect, useState } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
 import { AgGridReact } from 'ag-grid-react';
 
-import { GetMovieInfo } from "../backend/moreInfoBackend";
+// function to fetch the movie's information
+function GetMovieInfo(imdbID) {
+    console.log("Fetching Movie Info");
+    const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
+
+    return fetch(url, {method: "GET"})
+            .then(response => {
+                switch(response.status) {
+                    case 200:
+                        console.log("Response OK");
+                        return response.json();
+
+                    case 400:
+                    case 404:
+                    case 429:
+                        console.log("Response Note OK");
+                        throw new Error(response.statusText);
+                }
+            });
+}
+
 
 // columns for actor information
 const columns = [

@@ -23,16 +23,13 @@ function CreateUser() {
             console.log(response);
             switch(response.status) {
                 case 201:
-                    return ("User Created!")
-
+                    console.log("Response OK");
+                    return ("User Created!");
                 case 400:
-                    return ("Both Email and Password Required");
-
                 case 409:
-                    return ("User Already Exists");
-
                 case 429:
-                    return ("Too Many Requests");
+                    console.log("Response Not OK");
+                    throw new Error(response.statusText);
             }
         });
 }
@@ -49,10 +46,10 @@ export default function Register() {
                 <input id = "userEmail" name = "userEmail" type = "text"/>
                 <br/>
                 <label htmlFor = "userPassword1">Create Password: </label>
-                <input id = "userPassword1" name = "userPassword1" type = "text"/>
+                <input id = "userPassword1" name = "userPassword1" type = "password"/>
                 <br/>
                 <label htmlFor = "userPassword2">Confirm Password: </label>
-                <input id = "userPassword2" name = "userPassword2" type = "text"/>
+                <input id = "userPassword2" name = "userPassword2" type = "password"/>
                 <br/>
             </strong></form>
             <button onClick = {() => CreateUser().then(response => setRegisterStatus(response))}>

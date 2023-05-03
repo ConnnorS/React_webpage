@@ -6,7 +6,43 @@ import "ag-grid-community/styles/ag-grid.css";
 
 import { useNavigate } from 'react-router-dom';
 
-import { FetchMovieData } from '../backend/moviesBackend';
+// function to get information from the search bars
+function getSearchParams() {
+    console.log("Getting Search Params");
+
+    return {searchTitle: document.getElementById("searchBar").value, 
+            searchYear: document.getElementById("yearBar").value};
+}
+
+// function to fetch the data from the API
+function FetchMovieData(page) {
+    console.log("Fetching Movie Data");
+
+    // get the search parameters
+    const searchParams = getSearchParams();
+
+    // check if any of the variables are undefined to avoid a bad query
+    if (searchParams.searchTitle === undefined) searchParams.searchTitle = '';
+    if (searchParams.searchYear === undefined) searchParams.searchYear = '';
+    if (page === undefined) page = '';
+    
+    // fetch the data and return it
+    let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${searchParams.searchTitle}&year=${searchParams.searchYear}&page=${page}`;
+    return fetch(url, {method: "GET"})
+        .then(response => {
+            switch(response.status) {
+                case 200:
+                    console.log("Response OK");
+                    return response.json();
+                
+                case 400:
+                case 429:
+                    console.log("Response not OK");
+                    throw new Error(response.statusText);
+            }
+        })
+        .then(response => response.data)
+}
 
 // column definitions for table
 const columns = [
@@ -32,6 +68,7 @@ export default function Movies() {
 
     // set the data on page load or when the page changes
     useEffect(() => setAPIData(), [currentPage]);
+    
     function setAPIData() {
         FetchMovieData(currentPage)
             .then(movies => setMovies(movies));

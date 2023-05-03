@@ -42,7 +42,6 @@ function SignInUser() {
     const data = GetEmailAndPassword();
 
     console.log("Attempting Login");
-    console.log(`Sending email: ${data.email} and password: ${data.password}`);
 
     // log in the user and get the bearer token if successful
     return fetch(url, {
@@ -57,22 +56,18 @@ function SignInUser() {
     })
     // get the bearer token and its expiry
     .then(result => {
-        console.log("Result OK");
-        console.log(result);
+        console.log("Login Successful");
         localStorage.setItem("token", result.bearerToken.token);
         localStorage.setItem("refreshToken", result.refreshToken.token);
         localStorage.setItem("loggedIn", true);
         // call the refresh token function every 10 minutes
         setTimeout(RefreshBearer, result.bearerToken.expires_in * 1000);
-
-        return "Login Successful";
     })
     // return an error if something went wrong
-    .catch(() => {return "Error in Login"});
+    .catch(() => console.log("Login Unsuccessful"));
 }
 
 export default function Login() {
-    const Navigate = useNavigate();
     return (
         <div>
             <h1>Login</h1>
@@ -82,10 +77,10 @@ export default function Login() {
                 <input id = "userEmail" name = "userEmail" type = "text"/>
                 <br/>
                 <label htmlFor = "userPassword">Password: </label>
-                <input id = "userPassword" name = "userPassword" type = "text"/>
+                <input type = "password" id = "userPassword" name = "userPassword"/>
                 <br/>
-                <button type = "submit" onClick = {() => {SignInUser(); window.location.reload(); }}>Confirm!</button>
             </strong></form>
+            <button type = "submit" onClick = {() => {SignInUser();}}>Confirm!</button>
         </div>
     )
 }

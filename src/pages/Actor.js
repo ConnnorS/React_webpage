@@ -1,7 +1,32 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { GetActorInfo } from "../backend/actorBackend";
+function GetActorInfo(actorID) {
+    console.log("Fetching Actor Data");
+    const url = `http://sefdb02.qut.edu.au:3000/people/${actorID}`;
+    const token = localStorage.getItem("token");
+
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        switch (response.status) {
+            case 200:
+                console.log("Response OK");
+                return response.json();
+            case 400:
+            case 401:
+            case 404:
+            case 429:
+                console.log("Response not OK");
+                throw new Error(response.statusText);
+        }
+    });
+}
 
 export default function Actor() {
     // create a state variable for the actor infomation
