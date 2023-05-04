@@ -39,8 +39,7 @@ function FetchMovieData(page) {
         console.log("\tResponse not OK");
         throw new Error(Response.statstext);
       }
-    })
-    .then((response) => response.data);
+    });
 }
 
 // column definitions for table
@@ -89,7 +88,7 @@ export default function Movies() {
         <AgGridReact
           className="mainTable"
           columnDefs={columns}
-          rowData={movies}
+          rowData={movies.data}
           onRowClicked={(row) =>
             navigate(`/moreInfo?imdbID=${row.data.imdbID}`)
           }
@@ -102,17 +101,18 @@ export default function Movies() {
           onClick={() => {
             // change the current page to trigger the useEffect and change pages
             // only allow the page to go back if it's >= 2
-            if (currentPage >= 2) {
-              setCurrentPage(currentPage - 1);
-            }
+            if (currentPage >= 2) setCurrentPage(currentPage - 1);
           }}
         >
           Previous Page
         </button>
-        <text>&emsp; Page: {currentPage}&emsp;</text>
+        <strong>
+          &emsp; Page: {currentPage} / {movies?.pagination?.lastPage}&emsp;
+        </strong>
         <button
           onClick={() => {
-            setCurrentPage(currentPage + 1);
+            if (currentPage < movies.pagination.lastPage)
+              setCurrentPage(currentPage + 1);
           }}
         >
           Next Page
