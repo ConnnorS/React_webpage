@@ -22,16 +22,12 @@ function CreateUser() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: data.email, password: data.password }),
   }).then((response) => {
-    console.log(response);
-    switch (response.status) {
-      case 201:
-        console.log("Response OK");
-        return "User Created!";
-      case 400:
-      case 409:
-      case 429:
-        console.log("Response Not OK");
-        throw new Error(response.statusText);
+    if (response.status == 200) {
+      console.log("Response OK");
+      return "User Created!";
+    } else {
+      console.log("Response Not OK");
+      throw new Error(response.statusText);
     }
   });
 }
@@ -56,7 +52,8 @@ export default function Register() {
           <br />
         </strong>
       </form>
-      <button id="confirm"
+      <button
+        id="confirm"
         onClick={() =>
           CreateUser().then((response) => setRegisterStatus(response))
         }

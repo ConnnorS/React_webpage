@@ -16,33 +16,33 @@ function RefreshBearer() {
 
   console.log(`Sending ${refreshToken}`);
 
-  return (
-    fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refreshToken: refreshToken }),
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refreshToken: refreshToken }),
+  })
+  .then((response) => {
+    if (response.status == 200) {
+      console.log("Response OK");
+      return response.json();
+    }
+    else {
+      console.log("Reponse Not OK");
+      throw new Error(response.statusText);
+    }
     })
-      // check if the response is ok
-      .then((result) => {
-        if (result.ok) {
-          return result.json();
-        } else {
-          throw new Error(result.statusText);
-        }
-      })
-      .then((result) => {
-        console.log("Result OK");
-        console.log(result);
+    .then((response) => {
+      console.log("Result OK");
+      console.log(response);
 
-        localStorage.setItem("token", result.bearerToken.token);
-        localStorage.setItem("refreshToken", result.refreshToken.token);
+      localStorage.setItem("token", response.bearerToken.token);
+      localStorage.setItem("refreshToken", response.refreshToken.token);
 
-        return "Token Refreshed";
-      })
-      .catch(() => {
-        return "Error in token Refresh";
-      })
-  );
+      return "Token Refreshed";
+    })
+    .catch(() => {
+      return "Error in token Refresh";
+    });
 }
 
 // function to login the user
@@ -60,21 +60,24 @@ function SignInUser() {
       body: JSON.stringify({ email: data.email, password: data.password }),
     })
       // check if the response is ok
-      .then((result) => {
-        if (result.ok) {
-          return result.json();
-        } else {
-          throw new Error(result.statusText);
+      .then((response) => {
+        if (response.status == 200) {
+          console.log("Response OK");
+          return response.json();
+        }
+        else {
+          console.log("Reponse Not OK");
+          throw new Error(response.statusText);
         }
       })
       // get the bearer token and its expiry
-      .then((result) => {
+      .then((response) => {
         console.log("Login Successful");
-        localStorage.setItem("token", result.bearerToken.token);
-        localStorage.setItem("refreshToken", result.refreshToken.token);
+        localStorage.setItem("token", response.bearerToken.token);
+        localStorage.setItem("refreshToken", response.refreshToken.token);
         localStorage.setItem("loggedIn", true);
         // call the refresh token function every 10 minutes
-        setTimeout(RefreshBearer, result.bearerToken.expires_in * 100);
+        setInterval(RefreshBearer, response.bearerToken.expires_in * 1000);
       })
       // return an error if something went wrong
       .catch(() => console.log("Login Unsuccessful"))
@@ -83,7 +86,7 @@ function SignInUser() {
 
 export default function Login() {
   const Navigate = useNavigate();
-  
+
   return (
     <div className="login">
       <h1>Login</h1>

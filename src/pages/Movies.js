@@ -31,19 +31,17 @@ function FetchMovieData(page) {
   // fetch the data and return it
   let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${searchParams.searchTitle}&year=${searchParams.searchYear}&page=${page}`;
   return fetch(url, { method: "GET" })
-    .then((response) => {
-      switch (response.status) {
-        case 200:
-          console.log("Response OK");
-          return response.json();
-
-        case 400:
-        case 429:
-          console.log("Response not OK");
-          throw new Error(response.statusText);
+    .then(response => {
+      if (response.status == 200) {
+        console.log("Response OK");
+        return response.json();
+      }
+      else {
+        console.log("Response not OK");
+        throw new Error(Response.statstext);
       }
     })
-    .then((response) => response.data);
+    .then(response => response.data);
 }
 
 // column definitions for table

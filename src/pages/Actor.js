@@ -12,17 +12,14 @@ function GetActorInfo(actorID) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  }).then((response) => {
-    switch (response.status) {
-      case 200:
-        console.log("Response OK");
-        return response.json();
-      case 400:
-      case 401:
-      case 404:
-      case 429:
-        console.log("Response not OK");
-        throw new Error(response.statusText);
+  })
+  .then((response) => {
+    if (response.status == 200) {
+      console.log("Response OK");
+      return response.json();
+    } else {
+      console.log("Reponse Not OK");
+      throw new Error(response.statusText);
     }
   });
 }
@@ -41,7 +38,7 @@ export default function Actor() {
   }, []);
 
   return (
-    <div className = "actor">
+    <div className="actor">
       <h1>{notLoggedInMessage}</h1>
       <h2>Actor</h2>
       <p>
