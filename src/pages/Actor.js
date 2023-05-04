@@ -1,8 +1,9 @@
-import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
 
+// function to pull the actor info from the API
 function GetActorInfo(actorID) {
-  console.log("Fetching Actor Data");
+  console.log("Fetching Actor Data...");
   const url = `http://sefdb02.qut.edu.au:3000/people/${actorID}`;
   const token = localStorage.getItem("token");
 
@@ -15,31 +16,49 @@ function GetActorInfo(actorID) {
   })
   .then((response) => {
     if (response.status == 200) {
-      console.log("Response OK");
+      console.log("\tResponse OK");
       return response.json();
     } else {
-      console.log("Reponse Not OK");
+      console.log("\tReponse Not OK");
       throw new Error(response.statusText);
     }
   });
 }
 
+// function to display the actor info
 export default function Actor() {
   // create a state variable for the actor infomation
   const [actor, setActor] = useState([]);
-  const [notLoggedInMessage, setNotLoggedInMessage] = useState("");
+
+  const Navigate = useNavigate();
+  const isMounted = useRef(false);
+
 
   // get the search parameters
   const [searchParams] = useSearchParams();
   const actorID = searchParams.get("id");
 
+  // function to check if the user is logged in
+  function checkLogin() {
+    const loggedIn = localStorage.getItem("loggedIn");
+    console.log(loggedIn);
+    if (loggedIn) GetActorInfo(actorID).then(info => setActor(info));
+    else {
+      alert("You must be logged in to view this content");
+      Navigate("/movies");
+    }
+  }
+
   useEffect(() => {
-    GetActorInfo(actorID).then((info) => setActor(info));
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
+    checkLogin();
   }, []);
 
   return (
     <div className="actor">
-      <h1>{notLoggedInMessage}</h1>
       <h2>Actor</h2>
       <p>
         Name: {actor.name}

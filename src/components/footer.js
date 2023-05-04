@@ -1,4 +1,5 @@
 // footer
+// function to return the footer
 export default function Footer() {
   return (
     <div className="footer">

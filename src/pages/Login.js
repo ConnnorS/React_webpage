@@ -76,6 +76,7 @@ function SignInUser() {
         localStorage.setItem("token", response.bearerToken.token);
         localStorage.setItem("refreshToken", response.refreshToken.token);
         localStorage.setItem("loggedIn", true);
+        localStorage.setItem("email", data.email);
         // call the refresh token function every 10 minutes
         setInterval(RefreshBearer, response.bearerToken.expires_in * 1000);
       })

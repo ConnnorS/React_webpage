@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 // function to get information from the search bars
 function getSearchParams() {
-  console.log("Getting Search Params");
+  console.log("\tGetting Search Params");
 
   return {
     searchTitle: document.getElementById("searchBar").value,
@@ -18,7 +18,7 @@ function getSearchParams() {
 
 // function to fetch the data from the API
 function FetchMovieData(page) {
-  console.log("Fetching Movie Data");
+  console.log("Fetching Movie Data...");
 
   // get the search parameters
   const searchParams = getSearchParams();
@@ -33,11 +33,11 @@ function FetchMovieData(page) {
   return fetch(url, { method: "GET" })
     .then(response => {
       if (response.status == 200) {
-        console.log("Response OK");
+        console.log("\tResponse OK");
         return response.json();
       }
       else {
-        console.log("Response not OK");
+        console.log("\tResponse not OK");
         throw new Error(Response.statstext);
       }
     })
@@ -84,7 +84,7 @@ export default function Movies() {
       </div>
 
       {/* the table of movies */}
-      <div style={{ height: "800px", width: "800px" }}>
+      <div style={{ height: "800px", width: "800px" }} className="moviesTable">
         <AgGridReact
           className="mainTable"
           columnDefs={columns}
