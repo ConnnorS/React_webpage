@@ -4,16 +4,16 @@ import { AgGridReact } from "ag-grid-react";
 
 // function to fetch the movie's information
 function GetMovieInfo(imdbID) {
-  console.log("Fetching Movie Info");
+  console.log("Fetching Movie Info...");
   const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
 
   return fetch(url, { method: "GET" }).then(response => {
     if (response.status == 200) {
-        console.log("Response OK");
+        console.log("\tResponse OK");
         return response.json();
     }
     else {
-      console.log("Response Note OK");
+      console.log("\tResponse Not OK");
       throw new Error(response.statusText);
     }       
   })
@@ -65,7 +65,7 @@ export default function MoreInfo() {
 
       {/* the table of actors */}
       <div
-        className="ag-theme-balham"
+        className="mainTable"
         style={{ height: "300px", width: "605px" }}
       >
         <AgGridReact

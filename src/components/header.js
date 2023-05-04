@@ -46,14 +46,16 @@ function LoggedOn() {
 
   return (
     <>
-      <li
-        onClick={() => {
-          LogoutUser()
-            .then(() => Navigate("/"))
-            .then(() => window.location.reload());
-        }}
-      >
-        Logout
+      <li>
+        <Link
+          onClick={() => {
+            LogoutUser()
+              .then(() => Navigate("/"))
+              .then(() => window.location.reload());
+          }}
+        >
+          Logout
+        </Link>
       </li>
       <li id="helloMessage">Hello {email}</li>
     </>
@@ -91,8 +93,8 @@ export default function Header() {
       <header className="header">
         <nav>
           <ul>
-              <Navigation />
-              <LoggedOff />
+            <Navigation />
+            <LoggedOff />
           </ul>
         </nav>
       </header>
@@ -102,8 +104,8 @@ export default function Header() {
       <header className="header">
         <nav>
           <ul>
-              <Navigation />
-              <LoggedOn />
+            <Navigation />
+            <LoggedOn />
           </ul>
         </nav>
       </header>

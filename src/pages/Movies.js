@@ -76,14 +76,16 @@ export default function Movies() {
           &nbsp; from year: &nbsp;
           <input type="number" id="yearBar" />
           &nbsp;
-          <button id="searchButton" onClick={() => setAPIData()}>
-            Search!
-          </button>
+          <button onClick={() => setAPIData()}>Search</button>&emsp;
+          <button onClick={() => window.location.reload()}>Reset</button>
         </h4>
       </div>
 
       {/* the table of movies */}
-      <div style={{ height: "800px", width: "800px" }} className="moviesTable">
+      <div
+        style={{ height: "1200px", width: "1250px" }}
+        className="moviesTable"
+      >
         <AgGridReact
           className="mainTable"
           columnDefs={columns}

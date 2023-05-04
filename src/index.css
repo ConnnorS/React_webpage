@@ -144,7 +144,7 @@ button:hover {
   text-align: center;
 }
 
-/* REGISTER.JS & LOGIN.JS */
-.register, .login {
+/* REGISTER.JS & LOGIN.JS & ACTOR.JS */
+.register, .login, .actor {
   text-align: center;
 }
