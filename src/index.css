@@ -1,6 +1,5 @@
 * {
   margin: 0;
-  text-align: center;
 }
 
 body {
@@ -45,12 +44,17 @@ nav ul li, nav ul li a {
   text-decoration: none;
 }
 
+.header {
+  text-align: center;
+}
+
 
 /* HOME.JS */
 .home {
   font-weight: bold;
   background-color: #333;
   color: white;
+  text-align: center;
 }
 
 /* MOVIES.JS */
@@ -61,6 +65,7 @@ nav ul li, nav ul li a {
 
 .search {
   padding-bottom: 15px;
+  text-align: center;
 }
 
 #searchBar,
@@ -87,21 +92,20 @@ button:hover {
 
 /* FOOTER.JS */
 .footer {
+  padding-top: 5px;
   background-color: #333;
   color: white;
+  text-align: center;
 }
 
-/* table */
+/* TABLE */
 .mainTable {
   font-family: Arial, sans-serif;
 
   background-color: #333;
   color: white;
 
-  border: none;
-
   padding: 10px;
-  margin: 0;
 }
 
 .moviesTable {
@@ -111,19 +115,36 @@ button:hover {
 }
 
 .ag-header-cell-label {
-  font-size: 18px;
-  font-weight: bolder;
+  font-size: 15px;
+  font-weight: bold;
   justify-content: center;
+  border-bottom: 2px solid white;
 }
 
 .mainTable .ag-cell {
   border-bottom: 1px solid white;
+  margin-top: 2px;
 }
 
 .ag-cell {
-  font-size: 14px;
+  font-size: 15px;
+  text-align: center;
 }
 
 .mainTable .ag-pinned-left-cols-container {
   font-weight: bold;
+}
+
+.tableNav text {
+  font-weight: bold;
+}
+
+.tableNav {
+  padding-top: 15px;
+  text-align: center;
+}
+
+/* REGISTER.JS & LOGIN.JS */
+.register, .login {
+  text-align: center;
 }

@@ -27,7 +27,7 @@ function CreateUser() {
       return "User Created!";
     } else {
       console.log("Response Not OK");
-      throw new Error(response.statusText);
+      return "User Already Exists or Passwords Do Not Match";
     }
   });
 }

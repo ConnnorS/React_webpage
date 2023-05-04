@@ -31,17 +31,16 @@ function FetchMovieData(page) {
   // fetch the data and return it
   let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${searchParams.searchTitle}&year=${searchParams.searchYear}&page=${page}`;
   return fetch(url, { method: "GET" })
-    .then(response => {
+    .then((response) => {
       if (response.status == 200) {
         console.log("\tResponse OK");
         return response.json();
-      }
-      else {
+      } else {
         console.log("\tResponse not OK");
         throw new Error(Response.statstext);
       }
     })
-    .then(response => response.data);
+    .then((response) => response.data);
 }
 
 // column definitions for table
@@ -108,7 +107,7 @@ export default function Movies() {
         >
           Previous Page
         </button>
-        {currentPage}
+        <text>&emsp; Page: {currentPage}&emsp;</text>
         <button
           onClick={() => {
             setCurrentPage(currentPage + 1);
