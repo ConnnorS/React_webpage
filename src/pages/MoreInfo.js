@@ -60,6 +60,11 @@ export default function MoreInfo() {
         <i>{movieInfo.plot}</i>
         <br />
         <br />
+        {movieInfo.ratings?.map((rating, index) => (
+          <li key = {index}>
+            {rating.source}: {rating.value}
+          </li>
+        ))}
         <img src={movieInfo.poster} alt="Movie Poster" />
       </p>
 
