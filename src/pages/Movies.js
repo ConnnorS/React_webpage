@@ -75,7 +75,6 @@ export default function Movies() {
           <input type="number" id="yearBar" />
           &nbsp;
           <button onClick={() => setAPIData()}>Search</button>&emsp;
-          <button onClick={() => window.location.reload()}>Reset</button>
         </h4>
       </div>
 

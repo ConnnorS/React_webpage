@@ -41,8 +41,8 @@ function SignInUser() {
         const now = new Date();
         const tenMinutesFromNow = now.getTime() + 10 * 60000;
         localStorage.setItem("expiresAt", tenMinutesFromNow);
-        localStorage.setItem("loggedIn", true);
         localStorage.setItem("email", data.email);
+        localStorage.setItem("loggedIn", true);
       })
       // return an error if something went wrong
       .catch(() => console.log("Login Unsuccessful"))

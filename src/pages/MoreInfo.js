@@ -8,7 +8,7 @@ function GetMovieInfo(imdbID) {
   const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
 
   return fetch(url, { method: "GET" }).then((response) => {
-    if (response.status == 200) {
+    if (response.status === 200) {
       console.log("\tResponse OK");
       return response.json();
     } else {

@@ -6,7 +6,7 @@ function RefreshBearer() {
   const refreshToken = localStorage.getItem("refreshToken");
   const url = "http://sefdb02.qut.edu.au:3000/user/refresh";
 
-  console.log(`Sending ${refreshToken}`);
+  console.log("Attempting Token Refresh...");
 
   return fetch(url, {
     method: "POST",
@@ -15,27 +15,24 @@ function RefreshBearer() {
   })
     .then((response) => {
       if (response.status == 200) {
-        console.log("Response OK");
+        console.log("\tResponse OK");
         return response.json();
       } else {
-        console.log("Reponse Not OK");
+        console.log("\tReponse Not OK");
         throw new Error(response.statusText);
       }
     })
     .then((response) => {
-      console.log("Result OK");
-      console.log(response);
+      console.log("Setting Local Storage...");
 
       localStorage.setItem("token", response.bearerToken.token);
       localStorage.setItem("refreshToken", response.refreshToken.token);
       const now = new Date();
       const tenMinutesFromNow = now.getTime() + 10 * 60000;
       localStorage.setItem("expiresAt", tenMinutesFromNow);
+      localStorage.setItem("loggedIn", true);
 
-      return "Token Refreshed";
-    })
-    .catch(() => {
-      return "Error in token Refresh";
+      console.log("\tLocal Storage Set");
     });
 }
 
@@ -130,12 +127,12 @@ export default function Header() {
     const bearerExpired = Date.now() > expiry;
 
     if (bearerExpired) {
-      console.log("Bearer expired");
+      console.log("Bearer expired or no bearer present...");
       localStorage.clear();
       setLoggedIn(false);
     } else {
-      RefreshBearer();
       console.log("Bearer valid");
+      RefreshBearer();
       setInterval(() => RefreshBearer(), 600 * 1000);
       setLoggedIn(true);
     }
