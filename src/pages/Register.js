@@ -22,27 +22,26 @@ function CreateUser() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: data.email, password: data.password }),
   }).then((response) => {
-    if (response.status == 200) {
+    console.log(response.status);
+    if (response.status === 201) {
       console.log("Response OK");
-      return "User Created!";
+      alert("User Created!");
     } else {
       console.log("Response Not OK");
-      return "User Already Exists or Passwords Do Not Match";
+      alert("User Already Exists or Passwords Do Not Match");
     }
   });
 }
 
 export default function Register() {
-  const [registerStatus, setRegisterStatus] = useState("");
-
   return (
     <div className="register">
       <h1>Register</h1>
       <br />
-      <form>
+      <form onSubmit={() => CreateUser()}>
         <strong>
           <label htmlFor="userEmail">Your Email: </label>
-          <input id="userEmail" name="userEmail" type="text" />
+          <input id="userEmail" name="userEmail" type="email" />
           <br />
           <label htmlFor="userPassword1">Create Password: </label>
           <input id="userPassword1" name="userPassword1" type="password" />
@@ -51,16 +50,8 @@ export default function Register() {
           <input id="userPassword2" name="userPassword2" type="password" />
           <br />
         </strong>
+        <button type="submit">Confirm</button>
       </form>
-      <button
-        id="confirm"
-        onClick={() =>
-          CreateUser().then((response) => setRegisterStatus(response))
-        }
-      >
-        Confirm!
-      </button>
-      <p>{registerStatus}</p>
       <br />
     </div>
   );

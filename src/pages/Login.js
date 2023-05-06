@@ -14,7 +14,7 @@ function SignInUser() {
   const url = "http://sefdb02.qut.edu.au:3000/user/login";
   const data = GetEmailAndPassword();
 
-  console.log("Attempting Login");
+  console.log("Attempting Login...");
 
   // log in the user and get the bearer token if successful
   return (
@@ -23,19 +23,20 @@ function SignInUser() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: data.email, password: data.password }),
     })
-      // check if the response is ok
       .then((response) => {
-        if (response.status == 200) {
-          console.log("Response OK");
+        if (response.status === 200) {
+          console.log("\tResponse OK");
           return response.json();
         } else {
-          console.log("Reponse Not OK");
+          console.log("\tReponse Not OK");
           throw new Error(response.statusText);
         }
       })
-      // get the bearer token and its expiry
+      // add the relevant data to local storage
       .then((response) => {
-        console.log("Login Successful");
+        console.log("\tLogin Successful");
+        console.log("Setting Local Storage...");
+
         localStorage.setItem("token", response.bearerToken.token);
         localStorage.setItem("refreshToken", response.refreshToken.token);
         const now = new Date();
@@ -43,8 +44,9 @@ function SignInUser() {
         localStorage.setItem("expiresAt", tenMinutesFromNow);
         localStorage.setItem("email", data.email);
         localStorage.setItem("loggedIn", true);
+
+        console.log("\tLocal Storage Set");
       })
-      // return an error if something went wrong
       .catch(() => console.log("Login Unsuccessful"))
   );
 }
@@ -56,26 +58,24 @@ export default function Login() {
     <div className="login">
       <h1>Login</h1>
       <br />
-      <form>
-        <strong>
-          <label htmlFor="userEmail">Your Email: </label>
-          <input id="userEmail" name="userEmail" type="text" />
-          <br />
-          <label htmlFor="userPassword">Password: </label>
-          <input type="password" id="userPassword" name="userPassword" />
-          <br />
-        </strong>
-      </form>
-      <button
-        type="submit"
-        onClick={() => {
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
           SignInUser()
             .then(() => Navigate("/"))
             .then(() => window.location.reload());
         }}
       >
-        Confirm!
-      </button>
+        <strong>
+          <label htmlFor="userEmail">Your Email: </label>
+          <input id="userEmail" name="userEmail" type="email" />
+          <br />
+          <label htmlFor="userPassword">Password: </label>
+          <input type="password" id="userPassword" name="userPassword" />
+          <br />
+        </strong>
+        <button type="submit">Confirm</button>
+      </form>
     </div>
   );
 }

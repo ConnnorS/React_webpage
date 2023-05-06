@@ -15,7 +15,7 @@ function GetActorInfo(actorID) {
       Authorization: `Bearer ${token}`,
     },
   }).then((response) => {
-    if (response.status == 200) {
+    if (response.status === 200) {
       console.log("\tResponse OK");
       return response.json();
     } else {
@@ -35,17 +35,15 @@ const columns = [
 
 // function to display the actor info
 export default function Actor() {
-  // create a state variable for the actor infomation
   const [actor, setActor] = useState([]);
-
   const Navigate = useNavigate();
   const isMounted = useRef(false);
 
-  // get the search parameters
+  // get the actor id
   const [searchParams] = useSearchParams();
   const actorID = searchParams.get("id");
 
-  // function to check if the user is logged in
+  // check if the user is logged in
   function checkLogin() {
     const loggedIn = localStorage.getItem("loggedIn");
     if (loggedIn) GetActorInfo(actorID).then((info) => setActor(info));

@@ -8,32 +8,35 @@ function RefreshBearer() {
 
   console.log("Attempting Token Refresh...");
 
-  return fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken: refreshToken }),
-  })
-    .then((response) => {
-      if (response.status == 200) {
-        console.log("\tResponse OK");
-        return response.json();
-      } else {
-        console.log("\tReponse Not OK");
-        throw new Error(response.statusText);
-      }
+  return (
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken: refreshToken }),
     })
-    .then((response) => {
-      console.log("Setting Local Storage...");
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("\tResponse OK");
+          return response.json();
+        } else {
+          console.log("\tReponse Not OK");
+          throw new Error(response.statusText);
+        }
+      })
+      // add the relevant data to local storage
+      .then((response) => {
+        console.log("Setting Local Storage...");
 
-      localStorage.setItem("token", response.bearerToken.token);
-      localStorage.setItem("refreshToken", response.refreshToken.token);
-      const now = new Date();
-      const tenMinutesFromNow = now.getTime() + 10 * 60000;
-      localStorage.setItem("expiresAt", tenMinutesFromNow);
-      localStorage.setItem("loggedIn", true);
+        localStorage.setItem("token", response.bearerToken.token);
+        localStorage.setItem("refreshToken", response.refreshToken.token);
+        const now = new Date();
+        const tenMinutesFromNow = now.getTime() + 10 * 60000;
+        localStorage.setItem("expiresAt", tenMinutesFromNow);
+        localStorage.setItem("loggedIn", true);
 
-      console.log("\tLocal Storage Set");
-    });
+        console.log("\tLocal Storage Set");
+      })
+  );
 }
 
 // function to logout the user
@@ -50,7 +53,7 @@ function LogoutUser() {
     body: JSON.stringify({ refreshToken: refreshToken }),
   })
     .then((response) => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         console.log("\tSuccessfuly logged out");
       } else {
         console.log("\tLogout Unsuccessful");
@@ -60,61 +63,11 @@ function LogoutUser() {
     .then(() => localStorage.clear());
 }
 
-// returns register and sign in options
-function LoggedOff() {
-  return (
-    <>
-      <li>
-        <Link to="/register">Register</Link>
-      </li>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-    </>
-  );
-}
-
-// returns logout button
-function LoggedOn() {
-  const Navigate = useNavigate();
-  const email = localStorage.getItem("email");
-
-  return (
-    <>
-      <li>
-        <Link
-          onClick={() => {
-            LogoutUser()
-              .then(() => Navigate("/"))
-              .then(() => window.location.reload());
-          }}
-        >
-          Logout
-        </Link>
-      </li>
-      <li id="helloMessage">Hello {email}</li>
-    </>
-  );
-}
-
-// returns home and movies navigation
-function Navigation() {
-  return (
-    <>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/movies">Movies</Link>
-      </li>
-    </>
-  );
-}
-
-// function that returns the header
+// function returns the header component
 export default function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
   const isMounted = useRef(false);
+  const Navigate = useNavigate();
 
   // check if the user's refreshtoken can be refreshed
   useEffect(() => {
@@ -125,12 +78,14 @@ export default function Header() {
     // check if the current time is past the expiry time
     const expiry = localStorage.getItem("expiresAt");
     const bearerExpired = Date.now() > expiry;
-
+    // if expired, clear local storage and display login/register options
     if (bearerExpired) {
       console.log("Bearer expired or no bearer present...");
       localStorage.clear();
       setLoggedIn(false);
-    } else {
+    }
+    // if not expired, refresh the bearer and display logout opion
+    else {
       console.log("Bearer valid");
       RefreshBearer();
       setInterval(() => RefreshBearer(), 600 * 1000);
@@ -138,29 +93,44 @@ export default function Header() {
     }
   }, []);
 
-  // check whether the user is logged in to determine
-  // what header to render
-  if (!loggedIn) {
-    return (
-      <header className="header">
-        <nav>
-          <ul>
-            <Navigation />
-            <LoggedOff />
-          </ul>
-        </nav>
-      </header>
-    );
-  } else {
-    return (
-      <header className="header">
-        <nav>
-          <ul>
-            <Navigation />
-            <LoggedOn />
-          </ul>
-        </nav>
-      </header>
-    );
-  }
+  return (
+    <header className="header">
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/movies">Movies</Link>
+          </li>
+          {/* check if the user is logged in or not */}
+          {loggedIn ? (
+            <>
+              <li>
+                <Link
+                  onClick={() => {
+                    LogoutUser()
+                      .then(() => Navigate("/"))
+                      .then(() => window.location.reload());
+                  }}
+                >
+                  Logout
+                </Link>
+              </li>
+              <li id="helloMessage">Hello {localStorage.getItem("email")}</li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
+    </header>
+  );
 }
