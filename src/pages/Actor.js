@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { AgGridReact } from "ag-grid-react";
 
 // function to pull the actor info from the API
 function GetActorInfo(actorID) {
@@ -13,8 +14,7 @@ function GetActorInfo(actorID) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  })
-  .then((response) => {
+  }).then((response) => {
     if (response.status == 200) {
       console.log("\tResponse OK");
       return response.json();
@@ -25,6 +25,14 @@ function GetActorInfo(actorID) {
   });
 }
 
+// column definitions for table
+const columns = [
+  { headerName: "Movie", field: "movieName" },
+  { headerName: "ID", field: "movieId" },
+  { headerName: "Role", field: "category" },
+  { headerName: "Character", field: "characters" },
+];
+
 // function to display the actor info
 export default function Actor() {
   // create a state variable for the actor infomation
@@ -32,7 +40,6 @@ export default function Actor() {
 
   const Navigate = useNavigate();
   const isMounted = useRef(false);
-
 
   // get the search parameters
   const [searchParams] = useSearchParams();
@@ -42,13 +49,15 @@ export default function Actor() {
   function checkLogin() {
     const loggedIn = localStorage.getItem("loggedIn");
     console.log(loggedIn);
-    if (loggedIn) GetActorInfo(actorID).then(info => setActor(info));
+    if (loggedIn) GetActorInfo(actorID).then((info) => setActor(info));
     else {
       alert("You must be logged in to view this content");
       Navigate("/movies");
     }
   }
 
+  // don't mount the useEffect upon initial render
+  // (avoids two altert()'s)
   useEffect(() => {
     if (!isMounted.current) {
       isMounted.current = true;
@@ -68,6 +77,14 @@ export default function Actor() {
         Death Year: {actor.deathYear}
         <br />
       </p>
+      <div className="moviesTable">
+        <AgGridReact
+          domLayout="autoHeight"
+          className="mainTable"
+          columnDefs={columns}
+          rowData={actor.roles}
+        />
+      </div>
     </div>
   );
 }

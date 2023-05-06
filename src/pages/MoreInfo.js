@@ -7,16 +7,15 @@ function GetMovieInfo(imdbID) {
   console.log("Fetching Movie Info...");
   const url = `http://sefdb02.qut.edu.au:3000/movies/data/${imdbID}`;
 
-  return fetch(url, { method: "GET" }).then(response => {
+  return fetch(url, { method: "GET" }).then((response) => {
     if (response.status == 200) {
-        console.log("\tResponse OK");
-        return response.json();
-    }
-    else {
+      console.log("\tResponse OK");
+      return response.json();
+    } else {
       console.log("\tResponse Not OK");
       throw new Error(response.statusText);
-    }       
-  })
+    }
+  });
 }
 
 // columns for actor information
@@ -61,7 +60,7 @@ export default function MoreInfo() {
         <br />
         <br />
         {movieInfo.ratings?.map((rating, index) => (
-          <li key = {index}>
+          <li key={index}>
             {rating.source}: {rating.value}
           </li>
         ))}
@@ -69,11 +68,9 @@ export default function MoreInfo() {
       </p>
 
       {/* the table of actors */}
-      <div
-        className="mainTable"
-        style={{ height: "300px", width: "605px" }}
-      >
+      <div className="mainTable">
         <AgGridReact
+          domLayout="autoHeight"
           columnDefs={columns}
           rowData={movieInfo.principals}
           onRowClicked={(row) => navigate(`/actor?id=${row.data.id}`)}

@@ -30,16 +30,15 @@ function FetchMovieData(page) {
 
   // fetch the data and return it
   let url = `http://sefdb02.qut.edu.au:3000/movies/search?title=${searchParams.searchTitle}&year=${searchParams.searchYear}&page=${page}`;
-  return fetch(url, { method: "GET" })
-    .then((response) => {
-      if (response.status == 200) {
-        console.log("\tResponse OK");
-        return response.json();
-      } else {
-        console.log("\tResponse not OK");
-        throw new Error(Response.statstext);
-      }
-    });
+  return fetch(url, { method: "GET" }).then((response) => {
+    if (response.status == 200) {
+      console.log("\tResponse OK");
+      return response.json();
+    } else {
+      console.log("\tResponse not OK");
+      throw new Error(Response.statstext);
+    }
+  });
 }
 
 // column definitions for table
@@ -81,11 +80,9 @@ export default function Movies() {
       </div>
 
       {/* the table of movies */}
-      <div
-        style={{ height: "1200px", width: "1250px" }}
-        className="moviesTable"
-      >
+      <div className="moviesTable">
         <AgGridReact
+          domLayout="autoHeight"
           className="mainTable"
           columnDefs={columns}
           rowData={movies.data}
