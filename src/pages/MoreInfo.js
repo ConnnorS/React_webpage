@@ -40,33 +40,39 @@ export default function MoreInfo() {
   return (
     <div className="moreInfo">
       <h1>{movieInfo.title}</h1>
-
-      <p>
-        Released in: {movieInfo.year}
+      <div className="metadata">
+        <img id="poster" src={movieInfo.poster} alt="Movie Poster" />
         <br />
-        Run time: {movieInfo.runtime} minutes
+        <b id="releasedIn">Released in: </b>
+        {movieInfo.year}
         <br />
-        Genres:{" "}
+        <b id="runTime">Run time: </b>
+        {movieInfo.runtime} minutes
+        <br />
+        <b id="country">Country: </b>
+        {movieInfo.country}
+        <br />
+        <br />
+        <b id="genres">Genres:</b>
         {movieInfo.genres?.map((genre) => (
           <li key={genre}>{genre}</li>
         ))}
         <br />
-        Country: {movieInfo.country}
-        <br />
-        Box Office: ${movieInfo.boxoffice?.toLocaleString()}
-        <br />
-        <br />
-        <i>{movieInfo.plot}</i>
+        <b id="boxOffice">Box Office: </b>$
+        {movieInfo.boxoffice?.toLocaleString()}
         <br />
         <br />
+        <b id="ratings">Ratings:</b>
         {movieInfo.ratings?.map((rating, index) => (
           <li key={index}>
             {rating.source}: {rating.value}
           </li>
         ))}
-        <img src={movieInfo.poster} alt="Movie Poster" />
-      </p>
-
+        <br />
+        <b id="plot">Plot: </b>
+        <br />
+        <i>{movieInfo.plot}</i>
+      </div>
       {/* the table of actors */}
       <div className="mainTable">
         <AgGridReact
