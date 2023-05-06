@@ -9,42 +9,6 @@ function GetEmailAndPassword() {
   };
 }
 
-// function to refresh the token
-function RefreshBearer() {
-  const refreshToken = localStorage.getItem("refreshToken");
-  const url = "http://sefdb02.qut.edu.au:3000/user/refresh";
-
-  console.log(`Sending ${refreshToken}`);
-
-  return fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken: refreshToken }),
-  })
-  .then((response) => {
-    if (response.status == 200) {
-      console.log("Response OK");
-      return response.json();
-    }
-    else {
-      console.log("Reponse Not OK");
-      throw new Error(response.statusText);
-    }
-    })
-    .then((response) => {
-      console.log("Result OK");
-      console.log(response);
-
-      localStorage.setItem("token", response.bearerToken.token);
-      localStorage.setItem("refreshToken", response.refreshToken.token);
-
-      return "Token Refreshed";
-    })
-    .catch(() => {
-      return "Error in token Refresh";
-    });
-}
-
 // function to login the user
 function SignInUser() {
   const url = "http://sefdb02.qut.edu.au:3000/user/login";
@@ -64,8 +28,7 @@ function SignInUser() {
         if (response.status == 200) {
           console.log("Response OK");
           return response.json();
-        }
-        else {
+        } else {
           console.log("Reponse Not OK");
           throw new Error(response.statusText);
         }
@@ -75,10 +38,11 @@ function SignInUser() {
         console.log("Login Successful");
         localStorage.setItem("token", response.bearerToken.token);
         localStorage.setItem("refreshToken", response.refreshToken.token);
+        const now = new Date();
+        const tenMinutesFromNow = now.getTime() + 10 * 60000;
+        localStorage.setItem("expiresAt", tenMinutesFromNow);
         localStorage.setItem("loggedIn", true);
         localStorage.setItem("email", data.email);
-        // call the refresh token function every 10 minutes
-        setInterval(RefreshBearer, response.bearerToken.expires_in * 1000);
       })
       // return an error if something went wrong
       .catch(() => console.log("Login Unsuccessful"))

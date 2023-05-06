@@ -1,5 +1,43 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+// function to refresh the token
+function RefreshBearer() {
+  const refreshToken = localStorage.getItem("refreshToken");
+  const url = "http://sefdb02.qut.edu.au:3000/user/refresh";
+
+  console.log(`Sending ${refreshToken}`);
+
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refreshToken: refreshToken }),
+  })
+    .then((response) => {
+      if (response.status == 200) {
+        console.log("Response OK");
+        return response.json();
+      } else {
+        console.log("Reponse Not OK");
+        throw new Error(response.statusText);
+      }
+    })
+    .then((response) => {
+      console.log("Result OK");
+      console.log(response);
+
+      localStorage.setItem("token", response.bearerToken.token);
+      localStorage.setItem("refreshToken", response.refreshToken.token);
+      const now = new Date();
+      const tenMinutesFromNow = now.getTime() + 10 * 60000;
+      localStorage.setItem("expiresAt", tenMinutesFromNow);
+
+      return "Token Refreshed";
+    })
+    .catch(() => {
+      return "Error in token Refresh";
+    });
+}
 
 // function to logout the user
 function LogoutUser() {
@@ -79,11 +117,28 @@ function Navigation() {
 // function that returns the header
 export default function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const isMounted = useRef(false);
 
-  // get the login status
+  // check if the user's refreshtoken can be refreshed
   useEffect(() => {
-    const status = localStorage.getItem("loggedIn");
-    if (status != null) setLoggedIn(status);
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
+    // check if the current time is past the expiry time
+    const expiry = localStorage.getItem("expiresAt");
+    const bearerExpired = Date.now() > expiry;
+
+    if (bearerExpired) {
+      console.log("Bearer expired");
+      localStorage.clear();
+      setLoggedIn(false);
+    } else {
+      RefreshBearer();
+      console.log("Bearer valid");
+      setInterval(() => RefreshBearer(), 600 * 1000);
+      setLoggedIn(true);
+    }
   }, []);
 
   // check whether the user is logged in to determine
