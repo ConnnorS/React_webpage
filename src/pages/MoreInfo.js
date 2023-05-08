@@ -75,13 +75,17 @@ export default function MoreInfo() {
         <i>{movieInfo.plot}</i>
       </div>
       {/* the table of actors */}
-      <div className="mainTable">
-        <AgGridReact
-          domLayout="autoHeight"
-          columnDefs={columns}
-          rowData={movieInfo.principals}
-          onRowClicked={(row) => navigate(`/actor?id=${row.data.id}`)}
-        />
+      <div className="tableWrapper">
+        <div className="mainTable">
+          <h2>Cast:</h2>
+          <br />
+          <AgGridReact
+            domLayout="autoHeight"
+            columnDefs={columns}
+            rowData={movieInfo.principals}
+            onRowClicked={(row) => navigate(`/actor?id=${row.data.id}`)}
+          />
+        </div>
       </div>
     </div>
   );

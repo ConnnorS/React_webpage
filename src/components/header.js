@@ -81,6 +81,7 @@ export default function Header() {
     // if expired, clear local storage and display login/register options
     if (bearerExpired) {
       console.log("Bearer expired or no bearer present...");
+      console.log("\tClearing local storage");
       localStorage.clear();
       setLoggedIn(false);
     }

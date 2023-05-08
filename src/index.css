@@ -167,6 +167,10 @@ button:hover {
   text-align: center;
 }
 
+.tableWrapper {
+  padding-left: 15%;
+}
+
 /* REGISTER.JS & LOGIN.JS & ACTOR.JS */
 .register,
 .login,

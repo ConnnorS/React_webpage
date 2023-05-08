@@ -79,16 +79,18 @@ export default function Movies() {
       </div>
 
       {/* the table of movies */}
-      <div className="moviesTable">
-        <AgGridReact
-          domLayout="autoHeight"
-          className="mainTable"
-          columnDefs={columns}
-          rowData={movies.data}
-          onRowClicked={(row) =>
-            navigate(`/moreInfo?imdbID=${row.data.imdbID}`)
-          }
-        />
+      <div className="tableWrapper">
+        <div className="moviesTable">
+          <AgGridReact
+            domLayout="autoHeight"
+            className="mainTable"
+            columnDefs={columns}
+            rowData={movies.data}
+            onRowClicked={(row) =>
+              navigate(`/moreInfo?imdbID=${row.data.imdbID}`)
+            }
+          />
+        </div>
       </div>
 
       {/* buttons to move back and fourth through the pages */}
@@ -97,7 +99,7 @@ export default function Movies() {
           onClick={() => {
             // change the current page to trigger the useEffect and change pages
             // only allow the page to go back if it's >= 2
-            if (currentPage >= 2) setCurrentPage(currentPage - 1);
+            if (currentPage > 1) setCurrentPage(currentPage - 1);
           }}
         >
           Previous Page
