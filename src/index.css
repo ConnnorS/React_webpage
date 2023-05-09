@@ -101,7 +101,7 @@ button:hover {
 }
 
 .metadata #poster {
-  width: 400px;
+  width: 450px;
   margin-left: 300px;
 }
 
@@ -173,7 +173,6 @@ button:hover {
 
 /* REGISTER.JS & LOGIN.JS & ACTOR.JS */
 .register,
-.login,
-.actor {
+.login {
   text-align: center;
 }

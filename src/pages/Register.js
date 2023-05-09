@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // function to get information from the email and password bars
 function GetEmailAndPassword() {
@@ -10,17 +11,17 @@ function GetEmailAndPassword() {
   };
 }
 
+function passwordsMatch() {
+  const data = GetEmailAndPassword();
+
+  return data.password === data.passwordConfirm;
+}
+
 // function to create the user
 function CreateUser() {
   // define the url and get the user's input
   const url = "http://sefdb02.qut.edu.au:3000/user/register";
   const data = GetEmailAndPassword();
-
-  // check if the passwords don't match
-  if (data.password != data.passwordConfirm) {
-    alert("'Create Password' and 'Confirm Password' should match.");
-    return;
-  }
 
   // create the user
   return fetch(url, {
@@ -40,11 +41,21 @@ function CreateUser() {
 }
 
 export default function Register() {
+  const Navigate = useNavigate();
   return (
     <div className="register">
       <h1>Register</h1>
       <br />
-      <form onSubmit={() => CreateUser()}>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (passwordsMatch()) {
+            CreateUser()
+              .then(() => Navigate("/register"))
+              .then(() => window.location.reload());
+          } else alert("Passwords must match.");
+        }}
+      >
         <strong>
           <label htmlFor="userEmail">Your Email: </label>
           <input id="userEmail" name="userEmail" type="email" />

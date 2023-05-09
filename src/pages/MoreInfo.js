@@ -44,6 +44,7 @@ export default function MoreInfo() {
       <div className="metadata">
         <img id="poster" src={movieInfo.poster} alt="Movie Poster" />
         <br />
+        <div className="metaDataText">
         <b id="releasedIn">Released in: </b>
         {movieInfo.year}
         <br />
@@ -73,6 +74,7 @@ export default function MoreInfo() {
         <b id="plot">Plot: </b>
         <br />
         <i>{movieInfo.plot}</i>
+        </div>
       </div>
       {/* the table of actors */}
       <div className="tableWrapper">
