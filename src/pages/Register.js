@@ -34,7 +34,7 @@ function CreateUser() {
       alert("User Created!");
     } else {
       console.log("Response Not OK");
-      alert("User Already Exists or Passwords Do Not Match");
+      alert("User Already Exists or Bad Request");
     }
   });
 }
