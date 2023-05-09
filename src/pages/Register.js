@@ -16,6 +16,12 @@ function CreateUser() {
   const url = "http://sefdb02.qut.edu.au:3000/user/register";
   const data = GetEmailAndPassword();
 
+  // check if the passwords don't match
+  if (data.password != data.passwordConfirm) {
+    alert("'Create Password' and 'Confirm Password' should match.");
+    return;
+  }
+
   // create the user
   return fetch(url, {
     method: "POST",
