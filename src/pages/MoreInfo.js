@@ -42,7 +42,7 @@ export default function MoreInfo() {
       <h1>{movieInfo.title}</h1>
       <br />
       <div className="metadata">
-        <img id="poster" src={movieInfo.poster} alt="Movie Poster" />
+        <img id="poster" src={movieInfo.poster} alt="Poster for selected movie." />
         <br />
         <div className="metaDataText">
         <b id="releasedIn">Released in: </b>
