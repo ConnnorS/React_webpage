@@ -96,7 +96,7 @@ export default function Actor() {
   const chartData = {
     labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     datasets: [{
-      label: 'Rounded IMDB Rating',
+      label: 'Occurence of IMDB Rating',
       data: occurence,
       backgroundColor: 'white',
       borderColor: 'white',
@@ -107,7 +107,7 @@ export default function Actor() {
   return (
     <div className="actor">
       <div className="actorTitle">
-      <h2>Actor</h2>
+      <h2>Basic Info</h2>
       <p>
         Name: {actor.name}
         <br />
@@ -117,7 +117,9 @@ export default function Actor() {
         <br />
       </p>
       </div>
+      <br/>
       <div className="moviesTable">
+        <center><h2>{actor.name}'s Roles</h2></center>
         <AgGridReact
           domLayout="autoHeight"
           className="mainTable"
@@ -125,7 +127,9 @@ export default function Actor() {
           rowData={actor.roles}
         />
       </div>
+      <br/>
       <div className="ratingsChart">
+        <center><h2>{actor.name}'s Ratings</h2></center>
         <Bar data={chartData}/>
       </div>
     </div>
