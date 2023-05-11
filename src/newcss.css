@@ -116,3 +116,31 @@ a {
 .login {
   text-align: center;
 }
+
+/* MORE INFO */
+.moreInfo h1 {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.moreInfo .moreInfoDataWrapper,
+.moreInfo .moreInfoPoster {
+  display: flex;
+}
+
+.moreInfo .moreInfoDataWrapper {
+  margin-left: 25%;
+}
+
+.moreInfo .moreInfoMetadata {
+  margin-left: 5%;
+}
+
+.moreInfo .plot {
+  max-width: 75%;
+  overflow-wrap: break-word;
+}
+
+.moreInfo .mainTable {
+  margin-left: 25%;
+}

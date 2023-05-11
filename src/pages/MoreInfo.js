@@ -41,53 +41,62 @@ export default function MoreInfo() {
     <div className="moreInfo">
       <h1>{movieInfo.title}</h1>
       <br />
-      <div className="metadata">
-        <img id="poster" src={movieInfo.poster} alt="Poster for selected movie." />
-        <br />
-        <div className="metaDataText">
-        <b id="releasedIn">Released in: </b>
-        {movieInfo.year}
-        <br />
-        <b id="runTime">Run time: </b>
-        {movieInfo.runtime} minutes
-        <br />
-        <b id="country">Country: </b>
-        {movieInfo.country}
-        <br />
-        <br />
-        <b id="genres">Genres:</b>
-        {movieInfo.genres?.map((genre) => (
-          <li key={genre}>{genre}</li>
-        ))}
-        <br />
-        <b id="boxOffice">Box Office: </b>$
-        {movieInfo.boxoffice?.toLocaleString()}
-        <br />
-        <br />
-        <b id="ratings">Ratings:</b>
-        {movieInfo.ratings?.map((rating, index) => (
-          <li key={index}>
-            {rating.source}: {rating.value}
-          </li>
-        ))}
-        <br />
-        <b id="plot">Plot: </b>
-        <br />
-        <i>{movieInfo.plot}</i>
+
+      <div className="moreInfoDataWrapper">
+
+        <div className="moreInfoPoster">
+          <img id="poster" src={movieInfo.poster} alt="Poster for selected movie." />
+
+          <div className="moreInfoMetadata">
+            <b>Released in: </b>
+            {movieInfo.year}
+            <br />
+            <b>Run time: </b>
+            {movieInfo.runtime} minutes
+            <br />
+            <b>Country: </b>
+            {movieInfo.country}
+            <br />
+            <br />
+            <b>Genres:</b>
+            {movieInfo.genres?.map((genre) => (
+              <li key={genre}>{genre}</li>
+            ))}
+            <br />
+            <b>Box Office: </b>$
+            {movieInfo.boxoffice?.toLocaleString()}
+            <br />
+            <br />
+            <b>Ratings:</b>
+            {movieInfo.ratings?.map((rating, index) => (
+              <li key={index}>
+                {rating.source}: {rating.value}
+              </li>
+            ))}
+            <br />
+            <b>Plot: </b>
+            <br />
+            <div className="plot">
+              <i>{movieInfo.plot}</i>
+            </div>
+          </div>
+
         </div>
+
       </div>
+
+
       {/* the table of actors */}
-      <div className="tableWrapper">
-        <div className="mainTable">
-          <h2>Cast:</h2>
-          <br />
-          <AgGridReact
-            domLayout="autoHeight"
-            columnDefs={columns}
-            rowData={movieInfo.principals}
-            onRowClicked={(row) => navigate(`/actor?id=${row.data.id}`)}
-          />
-        </div>
+
+      <div className="mainTable">
+        <h2>{movieInfo.title}'s Cast:</h2>
+        <br />
+        <AgGridReact
+          domLayout="autoHeight"
+          columnDefs={columns}
+          rowData={movieInfo.principals}
+          onRowClicked={(row) => navigate(`/actor?id=${row.data.id}`)}
+        />
       </div>
     </div>
   );
