@@ -1,0 +1,118 @@
+/* ALL */
+* {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #333;
+  color: white;
+}
+
+/* TABLES */
+.mainTable {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+}
+
+.ag-header-cell-label {
+  font-size: 15px;
+  font-weight: bold;
+  justify-content: center;
+  border-bottom: 2px solid white;
+}
+
+.mainTable .ag-cell {
+  border-bottom: 1px solid white;
+  margin-top: 10px;
+}
+
+.ag-cell {
+  font-size: 15px;
+  text-align: center;
+}
+
+.mainTable .ag-pinned-left-cols-container {
+  font-weight: bold;
+}
+
+.tableNav text {
+  font-weight: bold;
+}
+
+.tableNav {
+  padding-top: 15px;
+  text-align: center;
+}
+
+button {
+  background-color: green;
+  border: none;
+  color: white;
+  padding: 5px 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input {
+  border-radius: 50px;
+  margin: 5px;
+  background-color: white;
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.header nav ul li,
+a {
+  display: inline-block;
+  padding-top: 0px;
+  padding-right: 10px;
+
+  text-decoration: underline;
+  font-size: 20px;
+  font-weight: bold;
+  
+  color: white;
+}
+
+.header #helloMessage {
+  text-decoration: none;
+}
+
+/* HOME */
+.home {
+  text-align: center;
+}
+
+/* MOVIES */
+.movies .search {
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.movies .tableNav {
+  padding-bottom: 50px;
+}
+
+/* REGISTER */
+.register {
+  text-align: center;
+}
+
+/* LOGIN */
+.login {
+  text-align: center;
+}

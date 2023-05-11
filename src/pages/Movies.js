@@ -79,8 +79,7 @@ export default function Movies() {
       </div>
 
       {/* the table of movies */}
-      <div className="tableWrapper">
-        <div className="moviesTable">
+        <div className="mainTable">
           <AgGridReact
             domLayout="autoHeight"
             className="mainTable"
@@ -91,7 +90,6 @@ export default function Movies() {
             }
           />
         </div>
-      </div>
 
       {/* buttons to move back and fourth through the pages */}
       <div className="tableNav">

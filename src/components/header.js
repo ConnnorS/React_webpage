@@ -96,42 +96,40 @@ export default function Header() {
 
   return (
     <header className="header">
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/movies">Movies</Link>
-          </li>
-          {/* check if the user is logged in or not */}
-          {loggedIn ? (
-            <>
-              <li>
-                <Link
-                  onClick={() => {
-                    LogoutUser()
-                      .then(() => Navigate("/"))
-                      .then(() => window.location.reload());
-                  }}
-                >
-                  Logout
-                </Link>
-              </li>
-              <li id="helloMessage">Hello {localStorage.getItem("email")}</li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link to="/register">Register</Link>
-              </li>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-            </>
-          )}
-        </ul>
-      </nav>
+      <nav><ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/movies">Movies</Link>
+        </li>
+        {/* check if the user is logged in or not */}
+        {loggedIn ? (
+          <>
+            <li>
+              <Link
+                onClick={() => {
+                  LogoutUser()
+                    .then(() => Navigate("/"))
+                    .then(() => window.location.reload());
+                }}
+              >
+                Logout
+              </Link>
+            </li>
+            <li id="helloMessage">Hello {localStorage.getItem("email")}</li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          </>
+        )}
+      </ul></nav>
     </header>
   );
 }
