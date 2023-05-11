@@ -101,19 +101,19 @@ export default function Actor() {
   return (
     <div className="actor">
       <div className="actorTitle">
-        <h2>Basic Info</h2>
-        <p>
-          Name: {actor.name}
-          <br />
-          Birth Year: {actor.birthYear}
-          <br />
-          Death Year: {actor.deathYear}
-          <br />
-        </p>
+        <h1>{actor.name}</h1>
+        <br />
+        <h4>{actor.birthYear} -  {actor.deathYear}</h4>
+        <br />
       </div>
       <br />
+      <div className="ratingsChart">
+        <h2>{actor.name}'s IMDB Ratings</h2>
+        <Bar data={chartData} />
+      </div>
+      <br /><br />
+      <h2>{actor.name}'s Roles</h2>
       <div className="moviesTable">
-        <center><h2>{actor.name}'s Roles</h2></center>
         <AgGridReact
           domLayout="autoHeight"
           className="mainTable"
@@ -122,10 +122,7 @@ export default function Actor() {
         />
       </div>
       <br />
-      <div className="ratingsChart">
-        <center><h2>{actor.name}'s Ratings</h2></center>
-        <Bar data={chartData} />
-      </div>
+
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./newcss.css";
+import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // components

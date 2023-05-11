@@ -84,7 +84,7 @@ export default function MoreInfo() {
         </div>
 
       </div>
-
+      <br />
 
       {/* the table of actors */}
 
