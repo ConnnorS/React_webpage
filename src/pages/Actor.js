@@ -62,13 +62,7 @@ export default function Actor() {
     const loggedIn = localStorage.getItem("loggedIn");
     if (loggedIn) {
       GetActorInfo(actorID)
-        .then(info => {
-          setActor(info);
-
-          setRatings(getRatings(info.roles));
-          console.log(ratings);
-
-        })
+        .then(info => { setActor(info); setRatings(getRatings(info.roles)); })
     }
     else {
       alert("You must be logged in to view this content");
@@ -101,23 +95,23 @@ export default function Actor() {
       backgroundColor: 'white',
       borderColor: 'white',
       borderWidth: 1,
-    }]    
+    }]
   };
 
   return (
     <div className="actor">
       <div className="actorTitle">
-      <h2>Basic Info</h2>
-      <p>
-        Name: {actor.name}
-        <br />
-        Birth Year: {actor.birthYear}
-        <br />
-        Death Year: {actor.deathYear}
-        <br />
-      </p>
+        <h2>Basic Info</h2>
+        <p>
+          Name: {actor.name}
+          <br />
+          Birth Year: {actor.birthYear}
+          <br />
+          Death Year: {actor.deathYear}
+          <br />
+        </p>
       </div>
-      <br/>
+      <br />
       <div className="moviesTable">
         <center><h2>{actor.name}'s Roles</h2></center>
         <AgGridReact
@@ -127,10 +121,10 @@ export default function Actor() {
           rowData={actor.roles}
         />
       </div>
-      <br/>
+      <br />
       <div className="ratingsChart">
         <center><h2>{actor.name}'s Ratings</h2></center>
-        <Bar data={chartData}/>
+        <Bar data={chartData} />
       </div>
     </div>
   );
