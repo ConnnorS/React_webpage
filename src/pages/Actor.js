@@ -1,6 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
+import { Bar } from "react-chartjs-2";
+import 'chart.js/auto';
 
 // function to pull the actor info from the API
 function GetActorInfo(actorID) {
@@ -25,6 +27,17 @@ function GetActorInfo(actorID) {
   });
 }
 
+// function to put each rating in an array and return it
+function getRatings(data) {
+  let temp = [];
+  data.forEach(element => {
+    const rating = Math.round(element.imdbRating);
+    temp.push(rating);
+  });
+
+  return temp;
+}
+
 // column definitions for table
 const columns = [
   { headerName: "Movie", field: "movieName" },
@@ -36,6 +49,7 @@ const columns = [
 // function to display the actor info
 export default function Actor() {
   const [actor, setActor] = useState([]);
+  const [ratings, setRatings] = useState([]);
   const Navigate = useNavigate();
   const isMounted = useRef(false);
 
@@ -46,7 +60,16 @@ export default function Actor() {
   // check if the user is logged in
   function checkLogin() {
     const loggedIn = localStorage.getItem("loggedIn");
-    if (loggedIn) GetActorInfo(actorID).then(info => {setActor(info); console.log(info)});
+    if (loggedIn) {
+      GetActorInfo(actorID)
+        .then(info => {
+          setActor(info);
+
+          setRatings(getRatings(info.roles));
+          console.log(ratings);
+
+        })
+    }
     else {
       alert("You must be logged in to view this content");
       Navigate("/movies");
@@ -63,8 +86,27 @@ export default function Actor() {
     checkLogin();
   }, []);
 
+  // chart
+  // store the occurence of each number
+  const occurence = new Array(10).fill(0);
+  ratings.forEach(element => {
+    occurence[element - 1]++;
+  });
+  // prepare the chart data
+  const chartData = {
+    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    datasets: [{
+      label: 'Rounded IMDB Rating',
+      data: occurence,
+      backgroundColor: 'white',
+      borderColor: 'white',
+      borderWidth: 1,
+    }]    
+  };
+
   return (
     <div className="actor">
+      <div className="actorTitle">
       <h2>Actor</h2>
       <p>
         Name: {actor.name}
@@ -74,6 +116,7 @@ export default function Actor() {
         Death Year: {actor.deathYear}
         <br />
       </p>
+      </div>
       <div className="moviesTable">
         <AgGridReact
           domLayout="autoHeight"
@@ -81,6 +124,9 @@ export default function Actor() {
           columnDefs={columns}
           rowData={actor.roles}
         />
+      </div>
+      <div className="ratingsChart">
+        <Bar data={chartData}/>
       </div>
     </div>
   );
