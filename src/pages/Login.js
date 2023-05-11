@@ -40,7 +40,7 @@ function SignInUser() {
         localStorage.setItem("token", response.bearerToken.token);
         localStorage.setItem("refreshToken", response.refreshToken.token);
         const now = new Date();
-        const tenMinutesFromNow = now.getTime() + 10 * 60000;
+        const tenMinutesFromNow = now.getTime() + response.bearerToken.expires_in * 1000;
         localStorage.setItem("expiresAt", tenMinutesFromNow);
         localStorage.setItem("email", data.email);
         localStorage.setItem("loggedIn", true);

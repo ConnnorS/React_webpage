@@ -46,7 +46,7 @@ export default function Actor() {
   // check if the user is logged in
   function checkLogin() {
     const loggedIn = localStorage.getItem("loggedIn");
-    if (loggedIn) GetActorInfo(actorID).then((info) => setActor(info));
+    if (loggedIn) GetActorInfo(actorID).then(info => {setActor(info); console.log(info)});
     else {
       alert("You must be logged in to view this content");
       Navigate("/movies");
