@@ -28,8 +28,11 @@ const columns = [
 export default function MoreInfo() {
   // page setup
   const [movieInfo, setMovieInfo] = useState([]);
+  /* we'll use a state variable to store the movie info even though it's only used once
+  since the API could be slow and only load the actor info afte the page has loaded fully */
+
   const [searchParams] = useSearchParams();
-  const imdbID = searchParams.get("imdbID");
+  const imdbID = searchParams.get("imdbID"); // get the imdbID from the search parameters for querying the API
   const navigate = useNavigate();
 
   // fetch the API info upon page load
@@ -59,11 +62,13 @@ export default function MoreInfo() {
             <br />
             <br />
             <b>Genres:</b>
+            {/* use the '?' to ensure the .map() function only runs when data is loaded */}
             {movieInfo.genres?.map((genre) => (
               <li key={genre}>{genre}</li>
             ))}
             <br />
             <b>Box Office: </b>$
+            {/* use the '?' to ensure the .toLocaleString() function only runs when data is loaded */}
             {movieInfo.boxoffice?.toLocaleString()}
             <br />
             <br />

@@ -8,7 +8,7 @@ export default function Home() {
       </p>
       <h2>Movie Searching Website</h2>
       <br />
-      <img src="https://c2.staticflickr.com/4/3285/3078493320_aa0a7ec1bd_b.jpg" alt="Image of a cinema with empty chairs."/>
+      <img src="https://c2.staticflickr.com/4/3285/3078493320_aa0a7ec1bd_b.jpg" alt="Image of a cinema with empty chairs." />
     </div>
   );
 }

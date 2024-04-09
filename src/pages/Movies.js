@@ -79,17 +79,17 @@ export default function Movies() {
       </div>
 
       {/* the table of movies */}
-        <div className="mainTable">
-          <AgGridReact
-            domLayout="autoHeight"
-            className="mainTable"
-            columnDefs={columns}
-            rowData={movies.data}
-            onRowClicked={(row) =>
-              navigate(`/moreInfo?imdbID=${row.data.imdbID}`)
-            }
-          />
-        </div>
+      <div className="mainTable">
+        <AgGridReact
+          domLayout="autoHeight"
+          className="mainTable"
+          columnDefs={columns}
+          rowData={movies.data}
+          onRowClicked={(row) =>
+            navigate(`/moreInfo?imdbID=${row.data.imdbID}`)
+          }
+        />
+      </div>
 
       {/* buttons to move back and fourth through the pages */}
       <div className="tableNav">
@@ -107,8 +107,8 @@ export default function Movies() {
         </strong>
         <button
           onClick={() => {
-            if (currentPage < movies.pagination.lastPage)
-              setCurrentPage(currentPage + 1);
+            // only allow the page to go forward if it's less than the last page number
+            if (currentPage < movies.pagination.lastPage) setCurrentPage(currentPage + 1);
           }}
         >
           Next Page

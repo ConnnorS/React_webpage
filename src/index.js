@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import MoreInfo from "./pages/MoreInfo";
 import Actor from "./pages/Actor";
 
+// render the entire app in a <BrowserRouter> component for page navigation
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
